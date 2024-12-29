@@ -1,0 +1,258 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <!--Import Google Icon Font-->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <link rel="stylesheet" href="styles.css">
+        <title>Badminton Court Schedule</title>
+      
+</head>
+<body>
+
+    <div class="container">
+      <header class="header">
+        <h2>Last refresh: <div>29 Dec 2024 10:00:00 AM</div></h2>
+        <h1>Court Schedule</h1>
+        <div class="date-navigation">
+          <button>&lt;</button>
+          <span>December</span>
+          <button>&gt;</button>
+        </div>
+      </header>
+
+
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>7:00 AM</th>
+            <td>Alpha | Egerton: three courts available<br><br>Alpha | Slough: two courts available<br><br>Roketto: five courts available</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>8:00 AM</th>
+            <td>Alpha | Egerton: 1,4,6,8,9,10,12,13,15<br><br>Alpha | Slough: 1,3,5,6,7,8,9,10,12,14,15,16,18<br><br>Roketto: 1,5,7,8,9,10,11,12</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>9:00 AM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>10:00 AM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>11:00 AM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>12:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>1:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>2:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>3:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>4:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>5:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>6:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>7:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>8:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>9:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>10:00 PM</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+        </tbody>
+      </table>
+      
+
+</body>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Array of day names
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Select all <th> elements within the <thead>, excluding the first one
+  const headerCells = document.querySelectorAll('thead th:not(:first-child)');
+
+  // Create a formatter for the desired date format
+  const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'numeric',
+    year: '2-digit'
+  });
+
+  // Iterate over the header cells and populate them
+  headerCells.forEach((cell, index) => {
+    // Calculate the date for the current header cell
+    const date = new Date(currentDate);
+    date.setDate(currentDate.getDate() + index);
+
+    // Get the day name and formatted date
+    const dayName = dayNames[date.getDay()];
+    const formattedDate = dateFormatter.format(date);
+
+    // Create a new div element with the class 'dateClass'
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'dateClass';
+    dateDiv.innerHTML = `${dayName}<br><div class="dateHeader">${formattedDate}</div>`;
+
+    // Set the content of the header cell
+    cell.innerHTML = '';
+    cell.appendChild(dateDiv);
+  });
+});
+
+
+</script>
+
+</html>
