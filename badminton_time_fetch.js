@@ -1,6 +1,6 @@
 // Function to fetch and parse the CSV data
 async function fetchTimesData() {
-  const url = "https://storage.googleapis.com/badminton-bookings/alpha_auburn_bookings.csv";
+  const url = "https://storage.googleapis.com/badminton-bookings/all_bookings.csv";
 
   try {
     const response = await fetch(url);
