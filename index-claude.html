@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court Schedule</title>
+    <style>
+        .schedule-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border: 1px solid #ddd;
+            min-width: 800px;
+            overflow-x: auto;
+        }
+        .header-cell {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
+        .date-subheader {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .time-slot {
+            padding: 10px;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            min-height: 100px;
+        }
+        .time-label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .court-info {
+            font-size: 12px;
+            white-space: pre-line;
+        }
+        .unavailable {
+            background-color: #fee2e2;
+        }
+        .available {
+            background-color: #f0fdf4;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .nav-button {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .nav-button:hover {
+            background-color: #e9ecef;
+        }
+        .current-week {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="schedule-container">
+        <div class="navigation">
+            <button class="nav-button" onclick="previousWeek()">Previous Week</button>
+            <div class="current-week" id="current-week"></div>
+            <button class="nav-button" onclick="nextWeek()">Next Week</button>
+        </div>
+        <div class="schedule-grid" id="schedule"></div>
+    </div>
+
+    <script>
+        // Your JSON data goes here
+        const courtData = [
+            {
+                "Location": "Alpha Slough",
+                "Court": "Court 1",
+                "Date": "2024-12-29",
+                "Time": "7:00am",
+                "Status": "available",
+                "Day": "Sunday"
+            },
+			{
+                "Location": "Alpha Slough",
+                "Court": "Court 2",
+                "Date": "2024-12-29",
+                "Time": "7:00am",
+                "Status": "available",
+                "Day": "Sunday"
+            },
+			{
+                "Location": "Alpha Egerton",
+                "Court": "Court 2",
+                "Date": "2024-12-29",
+                "Time": "7:00am",
+                "Status": "available",
+                "Day": "Sunday"
+            },
+			{
+                "Location": "Alpha Egerton",
+                "Court": "Court 2",
+                "Date": "2025-01-04",
+                "Time": "9:00am",
+                "Status": "available",
+                "Day": "Sunday"
+            },
+			{
+                "Location": "Roketto - Sydney Olympic Park",
+                "Court": "Court 14",
+                "Date": "2025-01-03",
+                "Time": "9:00am",
+                "Status": "available",
+                "Day": "Friday"
+            }
+            // ... Add the rest of your JSON data here
+        ];
+
+        const timeSlots = ['7:00am','8:00am','9:00am','10:00am','11:00am','12:00pm', '1:00pm','2:00pm', '3:00pm','4:00pm', '5:00pm','6:00pm','7:00pm','8:00pm','9:00pm','10:00pm','11:00pm'];
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        let currentStartDate; // Track the current week's start date
+
+        function getStartOfWeek(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            d.setDate(d.getDate() - day); // Go to start of week (Sunday)
+            return d;
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-US', {
+                month: 'numeric',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function getDateForDayIndex(startDate, dayIndex) {
+            const date = new Date(startDate);
+            date.setDate(date.getDate() + dayIndex);
+            return date.toISOString().split('T')[0];
+        }
+
+        function updateWeekDisplay() {
+            const endDate = new Date(currentStartDate);
+            endDate.setDate(endDate.getDate() + 6);
+            
+            const weekDisplay = document.getElementById('current-week');
+            weekDisplay.textContent = `${formatDate(currentStartDate)} - ${formatDate(endDate)}`;
+        }
+
+        function getCourtInfo(date, time) {
+            const courts = courtData.filter(
+                court => court.Date === date && court.Time === time
+            );
+
+            if (courts.length === 0) {
+                return 'No courts available';
+            }
+
+            const courtsByLocation = courts.reduce((acc, court) => {
+                if (!acc[court.Location]) {
+                    acc[court.Location] = [];
+                }
+                const courtNumber = court.Court.split(' ')[1];
+                acc[court.Location].push(courtNumber);
+                return acc;
+            }, {});
+
+            return Object.entries(courtsByLocation)
+                .map(([location, courtNumbers]) =>
+                    `${location}: ${courtNumbers.join(', ')}`)
+                .join('\n');
+        }
+
+        function createSchedule() {
+            const schedule = document.getElementById('schedule');
+            schedule.innerHTML = ''; // Clear existing schedule
+            
+            // Create header row
+            days.forEach((day, index) => {
+                const currentDate = new Date(currentStartDate);
+                currentDate.setDate(currentDate.getDate() + index);
+                
+                const headerCell = document.createElement('div');
+                headerCell.className = 'header-cell';
+                headerCell.innerHTML = `
+                    ${day}
+                    <div class="date-subheader">${formatDate(currentDate)}</div>
+                `;
+                schedule.appendChild(headerCell);
+            });
+
+            // Create time slots
+            timeSlots.forEach(time => {
+                days.forEach((day, index) => {
+                    const currentDate = getDateForDayIndex(currentStartDate, index);
+                    const courtInfo = getCourtInfo(currentDate, time);
+                    const isUnavailable = courtInfo === 'No courts available';
+                    
+                    const timeSlotDiv = document.createElement('div');
+                    timeSlotDiv.className = `time-slot ${isUnavailable ? 'unavailable' : 
+                                          courtInfo !== '' ? 'available' : ''}`;
+                    
+                    timeSlotDiv.innerHTML = `
+                        <div class="time-label">${time}</div>
+                        <div class="court-info">${courtInfo}</div>
+                    `;
+                    schedule.appendChild(timeSlotDiv);
+                });
+            });
+
+            updateWeekDisplay();
+        }
+
+        function nextWeek() {
+            const nextWeek = new Date(currentStartDate);
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            currentStartDate = nextWeek;
+            createSchedule();
+        }
+
+        function previousWeek() {
+            const prevWeek = new Date(currentStartDate);
+            prevWeek.setDate(prevWeek.getDate() - 7);
+            currentStartDate = prevWeek;
+            createSchedule();
+        }
+
+        // Initialize the schedule when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find the earliest date in the data
+            const dates = courtData.map(court => new Date(court.Date));
+            currentStartDate = getStartOfWeek(Math.min(...dates));
+            createSchedule();
+        });
+    </script>
+</body>
+</html>
