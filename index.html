@@ -137,7 +137,7 @@
                 <option value="Alpha Auburn">Alpha Auburn</option>
                 <option value="Alpha Egerton">Alpha Egerton</option>
                 <option value="Alpha Slough">Alpha Slough</option>
-                <option value="Roketto">Roketto</option>
+                <option value="Roketto - Sydney Olympic Park">Roketto</option>
             </select>
             <div class="expandCollapseAllOff" id="expandCollapseAllTag" style="display: none;"></div>
             <button class="nav-button" id="nextButton" onclick="nextWeek()">Next Week</button>
@@ -165,9 +165,11 @@
         var dates;
         var minDate;
         var maxDate;
+		var originalcourtData;
         
         async function initialize() {
             courtData = await fetchBookings();
+            originalcourtData = courtData;
             if (courtData.length > 0){
                 console.log('Bookings loaded:', courtData);
                 courtData = courtData.filter(court => court.Status !== "unavailable");
@@ -340,29 +342,29 @@
             if (dropdown) {
                 const options = Array.from(dropdown.options); // Get all option elements in the dropdown          
                 if(selectedValue == "All Courts") {
-                    document.querySelectorAll('.court-location').forEach(div => {
-                    div.style.removeProperty('display'); // Removes the display property, including 'none'
-                    });
+                    courtData = courtData.filter(court => court.Status !== "unavailable");
+                    dates = courtData.filter(court => court.Location.startsWith("Alpha")).map(court => new Date(court.Date));
+                    console.log('Filtered bookings:', courtData);
+                    minDate = new Date(Math.min(...dates));
+                    maxDate = new Date(Math.max(...dates));
+                    currentStartDate = getStartOfWeek(minDate);
+                    createSchedule();
                     
                 } else {
-                options.forEach(option => {
-                    const value = option.value;
-                    document.querySelectorAll('.court-location').forEach(div => {
-                        if (div.innerText.includes(value)) {
-                            div.style.display = 'none'; // Remove the inline display:none style
-                        }
-                    });
-                });
+                    courtData = courtData.filter(court => court.Status !== "unavailable");
+                    dates = courtData.filter(court => court.Location.startsWith("Alpha")).map(court => new Date(court.Date));
+                    courtData = courtData.filter(court => court.Location == selectedValue);
+                    console.log('Filtered bookings:', courtData);
+                    minDate = new Date(Math.min(...dates));
+                    maxDate = new Date(Math.max(...dates));
+                    currentStartDate = getStartOfWeek(minDate);
+                    createSchedule();
+                    courtData = originalcourtData
                 }
             }
 
-            document.querySelectorAll('.court-location').forEach(div => {
-            if (div.innerText.includes(selectedValue)) {
-            div.style.display = '';
-            }
-        });
+        };
 
-        }
 
         function expandCollapseAll(selectedValue) {
             const expandCollapseAllTag = document.querySelector("#expandCollapseAllTag");
