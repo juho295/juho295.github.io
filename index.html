@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- [Previous head section remains the same until styles] -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com;">
     <title>Court Schedule</title>
     <style>
-        /* [Previous styles remain the same] */
         .schedule-container {
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
         .schedule-grid {
             display: grid;
             grid-template-columns: 80px repeat(7, 1fr);
-            border: 1px solid #ddd;
+			gap: 6px;
             min-width: 880px;
             overflow-x: auto;
+            background-color: white;
         }
         .header-cell {
-            padding: 10px;
+            padding: 15px 10px;
             text-align: center;
             font-weight: bold;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #f8f9fa;
+            background-color: #faf9fc;
         }
         .time-header {
-            padding: 10px;
+            padding: 15px 10px;
             text-align: center;
-            font-weight: bold;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #f8f9fa;
+            background-color: white;
+            
         }
         .date-subheader {
             font-size: 12px;
@@ -43,32 +38,28 @@
             margin-top: 4px;
         }
         .time-slot {
-            padding: 10px;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            min-height: 100px;
+            position: relative;
+            padding: 15px 10px;
+            background-color: white;
+            min-height: 80px;
+			border: 1px solid #000000;
         }
         .time-column {
-            padding: 10px;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #f8f9fa;
+            padding: 15px 10px;
+            background-color: white;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
             font-size: 12px;
-            font-weight: bold;
         }
         .court-info {
             font-size: 12px;
-            white-space: pre-line;
-            line-height: 1.2;
+            line-height: 1.5;
         }
         .unavailable {
-            background-color: #fee2e2;
+            border-left: 5px solid #ff3b30;
         }
         .available {
-            background-color: #f0fdf4;
+            border-left: 5px solid #34c759;
         }
         .navigation {
             display: flex;
@@ -77,6 +68,22 @@
             margin-bottom: 20px;
         }
         .nav-button {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .dropdown {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .expandCollapseAllOff {
             padding: 8px 16px;
             background-color: #f8f9fa;
             border: 1px solid #ddd;
@@ -97,21 +104,19 @@
             font-weight: bold;
         }
         .court-location {
-            cursor: pointer;
-            margin-bottom: 2px;  /* Reduced from 4px */
-            line-height: 1.2;    /* Added to reduce vertical space */
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
+        /* Remove hover effects as they're not in the original */
         .court-location:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
         .court-numbers {
             display: none;
             margin-left: 10px;
             color: #666;
-            font-size: 11px;
-            margin-top: 1px;     /* Added small top margin */
-            margin-bottom: 2px;  /* Added small bottom margin */
-            line-height: 1.2;    /* Added to reduce vertical space */
+            font-size: 10px;
+            line-height: 1.4;
         }
         .court-numbers.expanded {
             display: block;
@@ -122,16 +127,20 @@
             margin-right: 4px;
             font-size: 10px;
         }
+        /* Style for the "No courts available" text */
+        .unavailable .court-info {
+            padding: 5px 0;
+            color: #333;
+        }
     </style>
 </head>
-<!-- [Body opening and navigation remain the same] -->
 <body>
     <div class="schedule-container">
         <div class="navigation">
             <button class="nav-button" id="prevButton" onclick="previousWeek()">Previous Week</button>
-            <button id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button>
+            <button class="expandCollapseAllOff" id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button>
             <div class="current-week" id="current-week"></div>
-            <select id="dropdown" onchange="applyFilter(this.value)">
+            <select class="dropdown" id="dropdown" onchange="applyFilter(this.value)">
                 <option value="" disabled selected>Filter by court</option>
                 <option value="All Courts">All courts</option>
                 <option value="Alpha Auburn">Alpha Auburn</option>
@@ -145,6 +154,7 @@
         <div class="schedule-grid" id="schedule"></div>
     </div>
 
+    <!-- Your existing JavaScript code remains the same -->
     <script>
         // [Previous functions remain the same until getCourtInfo]
         async function fetchBookings() {
@@ -276,7 +286,7 @@
             // Create empty top-left cell
             const emptyCell = document.createElement('div');
             emptyCell.className = 'time-header';
-            emptyCell.textContent = 'Time';
+            emptyCell.textContent = '';
             schedule.appendChild(emptyCell);
             
             // Create header row
