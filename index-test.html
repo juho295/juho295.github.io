@@ -999,9 +999,14 @@ let previousWidth = window.innerWidth;
 let previousHeight = window.innerHeight;
 
 window.addEventListener('resize', () => {
+    console.log('previousWidth:'+previousWidth);
+    console.log('newWidth:'+window.innerWidth);
+    console.log('previousHeight:'+previousHeight);
+    console.log('newHeight:'+window.innerHeight); 
     if (window.innerWidth !== previousWidth || window.innerHeight !== previousHeight) {
         previousWidth = window.innerWidth;
         previousHeight = window.innerHeight;
+        console.log('screen size changed');
         initializeMobileView();
     }
 });
