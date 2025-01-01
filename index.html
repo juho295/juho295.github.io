@@ -6,7 +6,15 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com;">
     <title>Court Schedule</title>
     <style>
-        /* Existing desktop styles */
+        .time-slot.no-data {
+            border-left: 5px solid #888;
+            background-color: rgba(136, 136, 136, 0.03);
+        }
+        .court-info.no-data {
+            color: #888;
+            font-style: italic;
+            display: flex;
+        }
         .schedule-container {
             padding: 20px;
             max-width: 1200px;
@@ -26,6 +34,25 @@
             text-align: center;
             font-weight: bold;
             background-color: #faf9fc;
+        }
+        .court-list-link {
+            color: #002c5a;
+            text-decoration: none;
+            display: block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .court-list-link:hover {
+            background-color: #0366d6;
+            color: white;
+            text-decoration: none;
+        }
+        .court-list-link::after {
+            content: "🡆";
+            font-size: 0.8em;
+            margin-left: 4px;
+            display: inline-block;
         }
         .time-header {
             padding: 15px 10px;
@@ -106,6 +133,10 @@
             margin-bottom: 8px;
             line-height: 1.4;
         }
+        .court-number {
+            display: inline-block;
+            padding: 0 2px;
+        }
         .court-numbers {
             display: none;
             margin-left: 10px;
@@ -125,6 +156,15 @@
 
         /* Mobile styles */
         @media (max-width: 768px) {
+            .mobile-timeslot.no-data {
+                border-left: 5px solid #888;
+                background-color: rgba(136, 136, 136, 0.03);
+            }
+
+            .mobile-court-unavailable.no-data {
+                color: #888;
+                font-style: italic;
+            }
             body {
                 margin: 0;
                 padding: 0;
@@ -253,7 +293,24 @@
                 padding: 4px 8px;
                 border-radius: 12px;
                 font-size: 13px;
-                color: #333;
+                color: #0366d6;
+                display: inline-block;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                margin: 2px;
+            }
+            .mobile-court-chip:hover {
+                background-color: #0366d6;
+                color: white;
+                transform: translateY(-1px);
+            }
+            .mobile-court-chip:active {
+                transform: translateY(0);
+            }
+            .court-link::after,
+            .mobile-court-chip::after {
+                font-size: 0.8em;
+                margin-left: 2px;
                 display: inline-block;
             }
             .mobile-filter-button:hover {
@@ -430,6 +487,13 @@ const timeSlots = ['7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm'
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+const BOOKING_URLS = {
+    'Alpha Auburn': 'https://alphabadminton.yepbooking.com.au/',
+    'Alpha Egerton': 'https://alphabadminton.yepbooking.com.au/',
+    'Alpha Slough': 'https://alphabadminton.yepbooking.com.au/',
+    'Roketto - Sydney Olympic Park': 'https://roketto.sportlogic.net.au/secure/customer/booking/v1/public/show'
+};
+
 // Global variables
 let courtData;
 let alphaCourts;
@@ -439,6 +503,10 @@ let maxDate;
 let originalcourtData;
 let currentStartDate;
 let selectedDay = 0; // For mobile view: 0-6 representing day of week
+
+function getBookingUrl(location) {
+    return BOOKING_URLS[location] || '#'; // Return the mapped URL or '#' if not found
+}
 
 // Fetch data from API
 async function fetchBookings() {
@@ -460,12 +528,38 @@ async function initialize() {
     originalcourtData = courtData;
     if (courtData.length > 0) {
         console.log('Bookings loaded:', courtData);
+        
+        // Filter out unavailable courts
         courtData = courtData.filter(court => court.Status !== "unavailable");
-        dates = courtData.filter(court => court.Location.startsWith("Alpha")).map(court => new Date(court.Date));
-        console.log('Filtered bookings:', courtData);
+        
+        // Get all dates from Alpha courts for determining date range
+        dates = courtData
+            .filter(court => court.Location.startsWith("Alpha"))
+            .map(court => new Date(court.Date));
+        
         minDate = new Date(Math.min(...dates));
         maxDate = new Date(Math.max(...dates));
+        
+        // Filter courtData to only include dates up to maxDate
+        courtData = courtData.filter(court => {
+            const courtDate = new Date(court.Date);
+            return courtDate <= maxDate;
+        });
+        
+        // Also filter originalcourtData
+        originalcourtData = originalcourtData.filter(court => {
+            const courtDate = new Date(court.Date);
+            return courtDate <= maxDate;
+        });
+        
         currentStartDate = getStartOfWeek(minDate);
+        
+        console.log('Date range:', {
+            minDate: minDate.toISOString(),
+            maxDate: maxDate.toISOString(),
+            filteredBookingsCount: courtData.length
+        });
+        
         createSchedule();
         initializeMobileView();
     }
@@ -519,6 +613,15 @@ function toggleCourtNumbers(element) {
 }
 
 function getCourtInfo(date, time) {
+    // Check if the date is beyond maxDate
+    const checkDate = new Date(date);
+    const maxDateCheck = new Date(maxDate);
+    maxDateCheck.setHours(23, 59, 59, 999);
+
+    if (checkDate > maxDateCheck) {
+        return 'No data available';
+    }
+
     const courts = courtData.filter(
         court => court.Date === date && court.Time === time
     );
@@ -537,18 +640,29 @@ function getCourtInfo(date, time) {
         } else {
             courtNumber = court.Court;
         }
-        acc[court.Location].push(courtNumber);
+        acc[court.Location].push({
+            number: courtNumber,
+            fullName: court.Court
+        });
         return acc;
     }, {});
 
     return Object.entries(courtsByLocation)
         .map(([location, courtNumbers]) => {
             const count = courtNumbers.length;
+            const bookingUrl = getBookingUrl(location);
             return `<div class="court-location" onclick="toggleCourtNumbers(this)">
                 <span class="expand-icon">▶</span>${location} (${count})
             </div>
             <div class="court-numbers">
-                Courts: ${courtNumbers.join(', ')}
+                <a href="${bookingUrl}" 
+                   class="court-list-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    Courts: ${courtNumbers.map(court => 
+                        `<span class="court-number">${court.number}</span>`
+                    ).join(', ')}
+                </a>
             </div>`;
         })
         .join('\n');
@@ -589,12 +703,23 @@ function createSchedule() {
         // Add court info for each day
         days.forEach((day, index) => {
             const currentDate = getDateForDayIndex(currentStartDate, index);
-            const courtInfo = getCourtInfo(currentDate, time);
-            const isUnavailable = courtInfo === 'No courts available';
+            const checkDate = new Date(currentDate);
+            const maxDateCheck = new Date(maxDate);
+            maxDateCheck.setHours(23, 59, 59, 999);
             
             const timeSlotDiv = document.createElement('div');
-            timeSlotDiv.className = `time-slot ${isUnavailable ? 'unavailable' : courtInfo !== '' ? 'available' : ''}`;
-            timeSlotDiv.innerHTML = `<div class="court-info">${courtInfo}</div>`;
+            
+            if (checkDate > maxDateCheck) {
+                // Date is beyond maxDate
+                timeSlotDiv.className = 'time-slot no-data';
+                timeSlotDiv.innerHTML = `<div class="court-info no-data">No data available</div>`;
+            } else {
+                const courtInfo = getCourtInfo(currentDate, time);
+                const isUnavailable = courtInfo === 'No courts available';
+                timeSlotDiv.className = `time-slot ${isUnavailable ? 'unavailable' : courtInfo !== '' ? 'available' : ''}`;
+                timeSlotDiv.innerHTML = `<div class="court-info">${courtInfo}</div>`;
+            }
+            
             schedule.appendChild(timeSlotDiv);
         });
     });
@@ -685,11 +810,10 @@ function renderMobileDates() {
     // Update the week range in the header
     const endDate = new Date(currentDate);
     endDate.setDate(endDate.getDate() + 6);
-    document.getElementById('mobileCurrent').innerHTML = `
-        ${formatDate(currentDate)} - ${formatDate(endDate)}
-    `;
+    document.getElementById('mobileCurrent').innerHTML = 
+        `${formatDate(currentDate)} - ${formatDate(endDate)}`;
     
-    // Keep the daily selector tabs
+    // Rest of the function remains the same
     mobileDates.innerHTML = '';
     for (let i = 0; i < 7; i++) {
         const date = new Date(currentDate);
@@ -721,20 +845,27 @@ function renderMobileSchedule() {
         const timeSlot = document.createElement('div');
         timeSlot.className = 'mobile-timeslot';
         
-        // Add availability class
-        if (courts && courts.length > 0) {
-            timeSlot.classList.add('available');
+        if (courts[0]?.isNoData) {
+            timeSlot.classList.add('no-data');
             timeSlot.innerHTML = `
                 <div class="mobile-time">${time}</div>
-                ${formatMobileCourtInfo(courts)}
+                <div class="mobile-court">
+                    <div class="mobile-court-unavailable">No data available</div>
+                </div>
             `;
-        } else {
+        } else if (courts[0]?.isUnavailable) {
             timeSlot.classList.add('unavailable');
             timeSlot.innerHTML = `
                 <div class="mobile-time">${time}</div>
                 <div class="mobile-court">
                     <div class="mobile-court-unavailable">No courts available</div>
                 </div>
+            `;
+        } else {
+            timeSlot.classList.add('available');
+            timeSlot.innerHTML = `
+                <div class="mobile-time">${time}</div>
+                ${formatMobileCourtInfo(courts)}
             `;
         }
         
@@ -743,30 +874,53 @@ function renderMobileSchedule() {
 }
 
 function getCourtInfoForMobile(date, time) {
+    // Check if the date is beyond maxDate
+    const checkDate = new Date(date);
+    const maxDateCheck = new Date(maxDate);
+    maxDateCheck.setHours(23, 59, 59, 999);
+
+    if (checkDate > maxDateCheck) {
+        return [{
+            location: 'No data available',
+            count: 0,
+            courts: [],
+            isNoData: true
+        }];
+    }
+
     if (!courtData || !Array.isArray(courtData)) {
         return [];
     }
     
-    return courtData
-        .filter(court => court.Date === date && court.Time === time)
-        .reduce((acc, court) => {
-            const location = court.Location;
-            if (!acc.find(c => c.location === location)) {
-                const courtsAtLocation = courtData.filter(
-                    c => c.Date === date && c.Time === time && c.Location === location
-                );
-                acc.push({
-                    location: location,
-                    count: courtsAtLocation.length,
-                    courts: courtsAtLocation.map(c => c.Court)
-                });
-            }
-            return acc;
-        }, []);
+    const filtered = courtData.filter(court => court.Date === date && court.Time === time);
+    
+    if (filtered.length === 0) {
+        return [{
+            location: 'No courts available',
+            count: 0,
+            courts: [],
+            isUnavailable: true
+        }];
+    }
+
+    return filtered.reduce((acc, court) => {
+        const location = court.Location;
+        if (!acc.find(c => c.location === location)) {
+            const courtsAtLocation = filtered.filter(c => c.Location === location);
+            acc.push({
+                location: location,
+                count: courtsAtLocation.length,
+                courts: courtsAtLocation.map(c => c.Court)
+            });
+        }
+        return acc;
+    }, []);
 }
 
 function formatMobileCourtInfo(courts) {
-    return courts.map(locationData => `
+    return courts.map(locationData => {
+        const bookingUrl = getBookingUrl(locationData.location);
+        return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
                 <span class="court-arrow">▶</span>
@@ -776,12 +930,15 @@ function formatMobileCourtInfo(courts) {
             <div class="mobile-court-list">
                 <div class="mobile-court-numbers">
                     ${locationData.courts.map(court => `
-                        <span class="mobile-court-chip">${court}</span>
+                        <a href="${bookingUrl}" 
+                           class="mobile-court-chip"
+                           target="_blank" 
+                           rel="noopener noreferrer">${court}</a>
                     `).join('')}
                 </div>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 }
 
 function selectMobileDay(day) {
@@ -789,15 +946,18 @@ function selectMobileDay(day) {
     document.querySelectorAll('.date-tab').forEach((tab, index) => {
         tab.classList.toggle('active', index === day);
     });
-    updateMobileCurrentDate();
+    // Remove the updateMobileCurrentDate call since we want to keep the weekly view
     renderMobileSchedule();
 }
 
 function updateMobileCurrentDate() {
-    const currentDate = new Date(currentStartDate);
-    currentDate.setDate(currentDate.getDate() + selectedDay);
+    const startDate = new Date(currentStartDate);
+    const endDate = new Date(currentStartDate);
+    endDate.setDate(endDate.getDate() + 6);
+    
+    // Keep the weekly range format
     document.getElementById('mobileCurrent').textContent = 
-        `${days[currentDate.getDay()]}, ${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
+        `${formatDate(startDate)} - ${formatDate(endDate)}`;
 }
 
 function toggleMobileFilter() {
@@ -848,8 +1008,12 @@ function mobilePreviousWeek() {
     prevWeek.setDate(prevWeek.getDate() - 7);
     if (prevWeek >= getStartOfWeek(minDate)) {
         currentStartDate = prevWeek;
-        // Keep the same day selected in the new week
         renderMobileDates();
+        // Update the header with the weekly range
+        const endDate = new Date(prevWeek);
+        endDate.setDate(endDate.getDate() + 6);
+        document.getElementById('mobileCurrent').textContent = 
+            `${formatDate(prevWeek)} - ${formatDate(endDate)}`;
         renderMobileSchedule();
     }
 }
@@ -859,8 +1023,12 @@ function mobileNextWeek() {
     nextWeek.setDate(nextWeek.getDate() + 7);
     if (nextWeek <= maxDate) {
         currentStartDate = nextWeek;
-        // Keep the same day selected in the new week
         renderMobileDates();
+        // Update the header with the weekly range
+        const endDate = new Date(nextWeek);
+        endDate.setDate(endDate.getDate() + 6);
+        document.getElementById('mobileCurrent').textContent = 
+            `${formatDate(nextWeek)} - ${formatDate(endDate)}`;
         renderMobileSchedule();
     }
 }
