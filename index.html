@@ -180,7 +180,8 @@
             }
             
             .mobile-view {
-                display: block;
+                width: 100%;
+                overflow-x: hidden; /* Prevent horizontal scrolling of the entire view */
             }
             
             .mobile-header {
@@ -189,6 +190,8 @@
                 background: white;
                 z-index: 100;
                 border-bottom: 1px solid #eee;
+                width: 100%;
+                overflow: hidden; /* Contains the scrolling dates */
             }
             
             .mobile-nav {
@@ -197,6 +200,8 @@
                 justify-content: space-between;
                 padding: 0 10px;
                 border-bottom: 1px solid #eee;
+                width: 100%;
+                box-sizing: border-box; /* Include padding in width calculation */
             }
             
             .mobile-current-date {
@@ -214,6 +219,10 @@
                 scrollbar-width: none;
                 gap: 8px;
                 padding: 10px;
+                /* Add these properties to ensure proper width and scrolling */
+                width: 100%;
+                min-width: 0;
+                margin: 0;
             }
             
             .mobile-dates::-webkit-scrollbar {
@@ -231,7 +240,9 @@
                 align-items: center;
                 gap: 4px;
                 min-width: 60px;
+                flex: 0 0 auto; /* This prevents the tabs from shrinking */
                 cursor: pointer;
+                white-space: nowrap; /* Prevents text wrapping */
             }
             
             .date-tab.active {
