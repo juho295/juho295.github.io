@@ -987,9 +987,19 @@ function toggleMobileFilter() {
     }
 }
 
-// Event listeners
-window.addEventListener('resize', initializeMobileView);
+
+// Event listener - on page load
+
 window.addEventListener('load', initialize);
+
+// Event listener - on page resize (check width only)
+let previousWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+    if (window.innerWidth !== previousWidth) {
+        previousWidth = window.innerWidth;
+        initializeMobileView();
+    }
+});
 
 // Expand/Collapse functions
 function expandCollapseAll() {
