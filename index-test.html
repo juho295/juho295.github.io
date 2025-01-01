@@ -1004,7 +1004,7 @@ window.addEventListener('resize', () => {
     console.log('previousWidth:'+previousWidth);
     console.log('newWidth:'+window.innerWidth);
 
-    if (window.innerWidth !== previousWidth || window.innerHeight !== previousHeight) {
+    if (window.innerWidth !== previousWidth) {
         previousWidth = window.innerWidth;
         initializeMobileView();
     }
