@@ -1008,10 +1008,11 @@ function expandCollapseAll() {
         });
     }
 }
-/*
+
 function toggleCourtList(element) {
     const courtList = element.nextElementSibling;
     const arrow = element.querySelector('.court-arrow');
+    console.log(element);
     
     // Toggle the visibility
     if (courtList.style.maxHeight) {
@@ -1022,72 +1023,6 @@ function toggleCourtList(element) {
         arrow.textContent = '▼';
     }
 }
-*/
-function toggleCourtList(element) {
-    let touchStartY = null;
-    let touchStartTime = null;
-    
-    // Add touch event listeners to the element
-    element.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-        touchStartTime = Date.now();
-    }, { passive: true });
-
-    element.addEventListener('touchend', (e) => {
-        if (!touchStartY || !touchStartTime) return;
-        
-        const touchEndY = e.changedTouches[0].clientY;
-        const touchDuration = Date.now() - touchStartTime;
-        const touchDistance = Math.abs(touchEndY - touchStartY);
-        
-        // Only toggle if:
-        // 1. The touch was short (less than 200ms)
-        // 2. The finger didn't move much (less than 10px)
-        // 3. Enough time has passed since last toggle (300ms)
-        if (touchDuration < 200 && touchDistance < 10) {
-            const now = Date.now();
-            if (now - lastTap < 300) return;
-            lastTap = now;
-
-            const courtList = element.nextElementSibling;
-            const arrow = element.querySelector('.court-arrow');
-            
-            if (courtList.style.maxHeight) {
-                courtList.style.maxHeight = null;
-                arrow.textContent = '▶';
-            } else {
-                courtList.style.maxHeight = courtList.scrollHeight + "px";
-                arrow.textContent = '▼';
-            }
-        }
-        
-        // Reset touch tracking
-        touchStartY = null;
-        touchStartTime = null;
-    }, { passive: true });
-
-    // Handle regular clicks for non-touch devices
-    element.addEventListener('click', (e) => {
-        // Only handle click events from non-touch devices
-        if ('ontouchstart' in window) return;
-        
-        const now = Date.now();
-        if (now - lastTap < 300) return;
-        lastTap = now;
-
-        const courtList = element.nextElementSibling;
-        const arrow = element.querySelector('.court-arrow');
-        
-        if (courtList.style.maxHeight) {
-            courtList.style.maxHeight = null;
-            arrow.textContent = '▶';
-        } else {
-            courtList.style.maxHeight = courtList.scrollHeight + "px";
-            arrow.textContent = '▼';
-        }
-    });
-}
-
 
 function mobilePreviousWeek() {
     const prevWeek = new Date(currentStartDate);
