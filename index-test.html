@@ -806,8 +806,8 @@ function initializeMobileView() {
     const navigation = document.querySelector('.navigation');
 
     // Remove any open filter dropdown when switching views
-    const existingFilter = document.getElementById('mobile-filter-dropdown');
-    if (existingFilter) existingFilter.remove();
+    //const existingFilter = document.getElementById('mobile-filter-dropdown');
+    //if (existingFilter) existingFilter.remove();
 
     if (isMobile) {
         mobileView.style.display = 'block';
@@ -993,6 +993,7 @@ window.addEventListener('load', initialize);
 
 // Expand/Collapse functions
 function expandCollapseAll() {
+    console.log('expandCollapseAll');
     const expandCollapseAllTag = document.querySelector("#expandCollapseAllTag");
     if (expandCollapseAllTag.classList.contains("expandCollapseAllOff")) {
         expandCollapseAllTag.classList.remove("expandCollapseAllOff");
