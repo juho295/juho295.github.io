@@ -256,31 +256,48 @@
                 color: #333;
                 display: inline-block;
             }
-			
+            .mobile-filter-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            }
+			.mobile-filter-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+            .mobile-filter-button.active {
+                background-color: #f0f0f0;
+                border-color: #0366d6;
+            }
+            .mobile-filter-button.active svg {
+            color: #0366d6;
+            }
             .mobile-filter-button {
                 position: fixed;
-                top: 16px;
-                right: 16px;
+                bottom: 24px; /* Distance from bottom */
+                right: 24px; /* Distance from right */
                 background: white;
                 border: 1px solid #ddd;
                 border-radius: 50%;
-                width: 40px;
-                height: 40px;
+                width: 48px; /* Slightly larger for better touch target */
+                height: 48px; /* Slightly larger for better touch target */
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Enhanced shadow for floating effect */
                 z-index: 1000;
+                cursor: pointer;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
             
             .mobile-filter-dropdown {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
+                position: fixed;
+                bottom: 84px; /* Position above the filter button */
+                left: 16px;
+                right: 16px;
                 background: white;
                 padding: 16px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 z-index: 999;
             }
 			.mobile-dropdown {
