@@ -12,7 +12,8 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com https://www.google-analytics.com;">
+
     <title>Court Finder</title>
     <style>
         .time-slot.no-data {
@@ -475,6 +476,8 @@
                 <option value="Alpha Auburn">Alpha Auburn</option>
                 <option value="Alpha Egerton">Alpha Egerton</option>
                 <option value="Alpha Slough">Alpha Slough</option>
+		<option value="KBC Rydalmere">KBC Rydalmere</option>   
+		<option value="NBC Silverwater">NBC Silverwater</option>
                 <option value="Roketto - Sydney Olympic Park">Roketto</option>
             </select>
             <div class="expandCollapseAllOff" id="expandCollapseAllTag" style="display: none;"></div>
@@ -502,8 +505,6 @@
     </div>
 
     <script>
-
-console.log('version3');        
 // Constants
 const timeSlots = ['7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm', '9:00pm', '10:00pm', '11:00pm'];
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -513,6 +514,8 @@ const BOOKING_URLS = {
     'Alpha Auburn': 'https://alphabadminton.yepbooking.com.au/',
     'Alpha Egerton': 'https://alphabadminton.yepbooking.com.au/',
     'Alpha Slough': 'https://alphabadminton.yepbooking.com.au/',
+    'NBC Silverwater': 'https://nbc.yepbooking.com.au/',
+    'KBC Rydalmere': 'https://kbcnsw.yepbooking.com.au/',	
     'Roketto - Sydney Olympic Park': 'https://roketto.sportlogic.net.au/secure/customer/booking/v1/public/show'
 };
 
@@ -802,7 +805,6 @@ function applyFilter(selectedValue) {
 
 // Mobile view functions
 function initializeMobileView() {
-    console.log('initializeMobileView');
     const isMobile = window.innerWidth <= 768;
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.schedule-grid');
@@ -990,26 +992,19 @@ function toggleMobileFilter() {
     }
 }
 
-// Event listeners
+
+// Event listener - on page load
 
 window.addEventListener('load', initialize);
 
-// window.addEventListener('resize', initializeMobileView);
-
+// Event listener - on page resize (check width only)
 let previousWidth = window.innerWidth;
-let previousHeight = window.innerHeight;
-
 window.addEventListener('resize', () => {
-    console.log('resized');
-    console.log('previousWidth:'+previousWidth);
-    console.log('newWidth:'+window.innerWidth);
-
     if (window.innerWidth !== previousWidth) {
         previousWidth = window.innerWidth;
         initializeMobileView();
     }
 });
-
 
 // Expand/Collapse functions
 function expandCollapseAll() {
@@ -1098,6 +1093,8 @@ function toggleMobileFilter() {
         { value: 'Alpha Auburn', text: 'Alpha Auburn' },
         { value: 'Alpha Egerton', text: 'Alpha Egerton' },
         { value: 'Alpha Slough', text: 'Alpha Slough' },
+	{ value: 'KBC Rydalmere', text: 'KBC Rydalmere' },
+	{ value: 'NBC Silverwater', text: 'NBC Silverwater' },    
         { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' }
     ];
 
