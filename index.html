@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Court Availability</title>
+    
+    <style>
+        /* CSS for Badminton Court Availability Website */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+.hamburger, .filter {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.day-selector {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+}
+
+.day {
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.day.selected {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    background-color: #ddd;
+}
+
+.data-pane {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.time-slot {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.time {
+    width: 10%;
+    font-weight: bold;
+}
+
+.court {
+    width: 90%;
+}
+
+.court-name {
+    display: block;
+    cursor: pointer;
+}
+
+.court-details {
+    margin-left: 20px;
+    display: none;
+    color: #555;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow-x: hidden;
+    transition: 0.5s;
+    z-index: 1000;
+}
+
+.overlay-content {
+    position: relative;
+    top: 50%;
+    left: 25%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 18px;
+    text-align: left;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
+            <div class="date-navigation">
+                <button class="arrow" onclick="changeWeek(-1)">&lt;</button>
+                <span id="date-range">29 Dec 2024 - 4 Jan 2025</span>
+                <button class="arrow" onclick="changeWeek(1)">&gt;</button>
+            </div>
+            <div class="filter" onclick="toggleFilter()">⚙</div>
+        </div>
+
+        <!-- Day Selector -->
+        <div class="day-selector">
+            <div class="day" onclick="selectDay(this)">Sun<br>29 Dec</div>
+            <div class="day" onclick="selectDay(this)">Mon<br>30 Dec</div>
+            <div class="day" onclick="selectDay(this)">Tue<br>31 Dec</div>
+            <div class="day" onclick="selectDay(this)">Wed<br>1 Jan</div>
+            <div class="day selected" onclick="selectDay(this)">Thu<br>2 Jan</div>
+            <div class="day" onclick="selectDay(this)">Fri<br>3 Jan</div>
+            <div class="day" onclick="selectDay(this)">Sat<br>4 Jan</div>
+        </div>
+
+        <!-- Data Pane -->
+        <div class="data-pane">
+            <div class="time-slot">
+                <div class="time">7 AM</div>
+                <div class="court">
+                    <span class="court-name" onclick="toggleCourtDetails(this)">▶ Alpha Auburn (3)</span>
+                </div>
+                <div class="court">
+                    <span class="court-name" onclick="toggleCourtDetails(this)">▶ Alpha Slough (13)</span>
+                    <div class="court-details">Courts: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13</div>
+                </div>
+                <div class="court">
+                    <span class="court-name" onclick="toggleCourtDetails(this)">▶ Roketto (5)</span>
+                </div>
+            </div>
+            <!-- More time slots here -->
+        </div>
+    </div>
+
+    <!-- Sliding Menu Overlay -->
+    <div id="menu-overlay" class="overlay">
+        <div class="overlay-content">
+            <p>Menu Item 1</p>
+            <p>Menu Item 2</p>
+            <p>Menu Item 3</p>
+        </div>
+    </div>
+
+    <!-- Filter Pop-up -->
+    <div id="filter-popup" class="popup">
+        <div class="popup-content">
+            <h3>Filter Courts</h3>
+            <label><input type="checkbox" value="Alpha Slough"> Alpha Slough</label><br>
+            <label><input type="checkbox" value="Alpha Auburn"> Alpha Auburn</label><br>
+            <label><input type="checkbox" value="Alpha Egerton"> Alpha Egerton</label><br>
+            <label><input type="checkbox" value="Roketto"> Roketto</label><br>
+            <label><input type="checkbox" value="All Courts"> All Courts</label><br>
+            <button onclick="toggleCourtNumbers()">Expand/Collapse Court Numbers</button>
+            <button onclick="applyFilter()">Apply Filter</button>
+        </div>
+    </div>
+
+
+
+
+/* JavaScript for Badminton Court Availability Website */
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu-overlay');
+        menu.style.width = menu.style.width === '0px' || !menu.style.width ? '250px' : '0px';
+    }
+
+    function toggleFilter() {
+        const filter = document.getElementById('filter-popup');
+        filter.style.display = filter.style.display === 'none' || !filter.style.display ? 'block' : 'none';
+    }
+
+    function changeWeek(direction) {
+        // Logic to change week (dummy example)
+        alert(`Change week by ${direction}`);
+    }
+
+    function selectDay(element) {
+        const days = document.querySelectorAll('.day');
+        days.forEach(day => day.classList.remove('selected'));
+        element.classList.add('selected');
+    }
+
+    function toggleCourtDetails(element) {
+        const details = element.nextElementSibling;
+        if (details) {
+            const isVisible = details.style.display === 'block';
+            details.style.display = isVisible ? 'none' : 'block';
+            element.textContent = isVisible ? element.textContent.replace('▼', '▶') : element.textContent.replace('▶', '▼');
+        }
+    }
+
+    function toggleCourtNumbers() {
+        const courtDetails = document.querySelectorAll('.court-details');
+        const shouldExpand = Array.from(courtDetails).some(detail => detail.style.display === 'none');
+        courtDetails.forEach(detail => detail.style.display = shouldExpand ? 'block' : 'none');
+    }
+
+    function applyFilter() {
+        alert('Filters applied');
+        toggleFilter();
+    }
+</script>
+
+
+</body>
+</html>
