@@ -529,8 +529,18 @@ let originalcourtData;
 let currentStartDate;
 let selectedDay = 0; // For mobile view: 0-6 representing day of week
 
-function getBookingUrl(location) {
-    return BOOKING_URLS[location] || '#'; // Return the mapped URL or '#' if not found
+function getBookingUrl(location, date) {
+    const baseUrl = BOOKING_URLS[location];
+    if (!baseUrl) {
+        return '#';
+    }
+
+    const d = new Date(date);
+    const day = d.getDate();
+    const month = d.getMonth() + 1; // Months are zero-indexed
+    const year = d.getFullYear();
+
+    return `${baseUrl}?day=${day}&month=${month}&year=${year}`;
 }
 
 // Fetch data from API
@@ -638,7 +648,6 @@ function toggleCourtNumbers(element) {
 }
 
 function getCourtInfo(date, time) {
-    // Check if the date is beyond maxDate
     const checkDate = new Date(date);
     const maxDateCheck = new Date(maxDate);
     maxDateCheck.setHours(23, 59, 59, 999);
@@ -675,7 +684,7 @@ function getCourtInfo(date, time) {
     return Object.entries(courtsByLocation)
         .map(([location, courtNumbers]) => {
             const count = courtNumbers.length;
-            const bookingUrl = getBookingUrl(location);
+            const bookingUrl = getBookingUrl(location, date);
             return `<div class="court-location" onclick="toggleCourtNumbers(this)">
                 <span class="expand-icon">▶</span>${location} (${count})
             </div>
@@ -862,14 +871,14 @@ function renderMobileSchedule() {
     const currentDate = new Date(currentStartDate);
     currentDate.setDate(currentDate.getDate() + selectedDay);
     const dateStr = currentDate.toISOString().split('T')[0];
-    
+
     mobileSchedule.innerHTML = '';
-    
+
     timeSlots.forEach(time => {
         const courts = getCourtInfoForMobile(dateStr, time);
         const timeSlot = document.createElement('div');
         timeSlot.className = 'mobile-timeslot';
-        
+
         if (courts[0]?.isNoData) {
             timeSlot.classList.add('no-data');
             timeSlot.innerHTML = `
@@ -890,16 +899,15 @@ function renderMobileSchedule() {
             timeSlot.classList.add('available');
             timeSlot.innerHTML = `
                 <div class="mobile-time">${time}</div>
-                ${formatMobileCourtInfo(courts)}
+                ${formatMobileCourtInfo(courts, dateStr)}
             `;
         }
-        
+
         mobileSchedule.appendChild(timeSlot);
     });
 }
 
 function getCourtInfoForMobile(date, time) {
-    // Check if the date is beyond maxDate
     const checkDate = new Date(date);
     const maxDateCheck = new Date(maxDate);
     maxDateCheck.setHours(23, 59, 59, 999);
@@ -916,9 +924,9 @@ function getCourtInfoForMobile(date, time) {
     if (!courtData || !Array.isArray(courtData)) {
         return [];
     }
-    
+
     const filtered = courtData.filter(court => court.Date === date && court.Time === time);
-    
+
     if (filtered.length === 0) {
         return [{
             location: 'No courts available',
@@ -942,9 +950,9 @@ function getCourtInfoForMobile(date, time) {
     }, []);
 }
 
-function formatMobileCourtInfo(courts) {
+function formatMobileCourtInfo(courts, date) {
     return courts.map(locationData => {
-        const bookingUrl = getBookingUrl(locationData.location);
+        const bookingUrl = getBookingUrl(locationData.location, date);
         return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
