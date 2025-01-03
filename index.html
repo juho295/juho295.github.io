@@ -462,7 +462,12 @@
             }
         }
       
-/* Find courts overlay */
+      
+      
+      
+      
+      
+        /* The overlay */
     .overlay {
       display: none;
       position: fixed;
@@ -530,7 +535,7 @@
         </div>
         <div class="schedule-grid" id="schedule"></div>
 
-
+      
    <div class="overlay" id="overlay">
     <div class="overlay-content">
       <label for="date">Date:</label>
@@ -577,6 +582,8 @@
       <button onclick="toggleOverlay()">Close</button>
     </div>
   </div>
+      
+      
       
       
         <!-- Mobile View -->
@@ -1126,7 +1133,7 @@ function expandCollapseAll() {
     }
 }
 
-          // Function to toggle the find courts overlay (expand and contract)
+          // Function to toggle the overlay (expand and contract)
     function toggleOverlay() {
       const overlay = document.getElementById('overlay');
       const overlayContent = document.querySelector('.overlay-content');
@@ -1149,6 +1156,7 @@ function expandCollapseAll() {
         }, 300);  // Time to match the transition duration
       }
     }
+     
       
 function toggleCourtList(element) {
     const courtList = element.nextElementSibling;
@@ -1208,7 +1216,11 @@ function toggleMobileFilter() {
     const select = document.createElement('select');
     select.className = 'mobile-dropdown';
     select.onchange = function() {
-        applyFilter(this.value);
+      if (this.value === "Find Courts"){
+        toggleOverlay();
+      } else {
+        applyFilter(this.value);        
+      }
         toggleMobileFilter(); // Close the filter after selection
     };
 
@@ -1221,7 +1233,9 @@ function toggleMobileFilter() {
         { value: 'Alpha Slough', text: 'Alpha Slough' },
 	{ value: 'KBC Rydalmere', text: 'KBC Rydalmere' },
 	{ value: 'NBC Silverwater', text: 'NBC Silverwater' },    
-        { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' }
+        { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' },
+        { value: 'Find Courts', text: '► Find Courts ◄' }
+
     ];
 
     options.forEach(option => {
