@@ -48,8 +48,9 @@
 /* Filter Group Styles */
 .filter-group {
     margin-bottom: 20px;
-}
+    max-width: 70%; /* Limit width to half */
 
+}
 .filter-group label {
     display: block;
     margin-bottom: 8px;
@@ -59,14 +60,21 @@
 
 .filter-input {
     width: 100%;
+    box-sizing: border-box;
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
-    line-height: 20px;
+    line-height: 1.5;
     color: #24292e;
     background-color: #fff;
     transition: border-color 0.15s ease-in-out;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+input[type="date"].filter-input {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .filter-input:focus {
@@ -635,21 +643,62 @@
             .mobile-timeslot.available:active {
                 background-color: rgba(52,199,89,0.1);
             }
-			
+            .overlay {
+                align-items: flex-start; /* Align to top on mobile */
+                padding: 20px; /* Add padding around the overlay */
+            }
             .overlay-content {
-                width: 95%;
-                padding: 20px;
-                margin: 20px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .filter-button {
+                margin: 20px auto; /* Center content and add margin */
                 width: 100%;
+                padding: 16px;
+                max-height: calc(100vh - 40px); /* Account for padding */
             }
-            }
+
+    .filter-group {
+        margin-bottom: 16px;
+		max-width: 75%;
+    }
+
+    .filter-input {
+        min-height: 30px; /* Minimum touch target size */
+        font-size: 14px; /* Prevent auto-zoom on iOS */
+    }
+
+    /* Specific styling for number inputs */
+    input[type="number"].filter-input {
+        -moz-appearance: textfield; /* Remove spinner arrows in Firefox */
+    }
+
+    input[type="number"].filter-input::-webkit-outer-spin-button,
+    input[type="number"].filter-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Specific styling for date input */
+    input[type="date"].filter-input {
+        min-height: 44px;
+        padding-right: 10px; /* Add space for the calendar icon */
+    }
+
+    /* Specific styling for select */
+    select.filter-input {
+        padding-right: 30px; /* Space for the dropdown arrow */
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+    }
+
+    .button-group {
+        margin-top: 20px;
+        gap: 8px;
+    }
+
+    .filter-button {
+        min-height: 44px; /* Minimum touch target size */
+        width: 100%;
+    }
+}
       
       
       
