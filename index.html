@@ -13,9 +13,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com https://www.google-analytics.com;">
-
-    <title>Court Finder</title>
+    <meta name="description" content="Discover the top badminton courts in Sydney with our comprehensive court finder. Perfect for finding badminton courts easily.">
+    <meta name="Sydney Badminton" content="Sydney Badminton Court Finder">
+    <meta property="og:title" content="Find Badminton Courts in Sydney">
+    <meta property="og:description" content="Perfect for finding badminton courts easily.">
+    <title>Find Available Badminton Courts in Sydney - Badminton Court Finder</title>
     <style>
+
 .overlay {
     display: none;
     position: fixed;
@@ -704,13 +708,26 @@ input[type="date"].filter-input {
     }
 }
       
-      
+
+footer {
+    margin-top: auto; /* Push footer to the bottom */
+    text-align: center; /* Center text horizontally */
+    padding: 20px;
+    background-color: #f4f4f4;
+}
       
       
       
     </style>
 </head>
 <body>
+
+    <!-- SEO -->
+    <h1 style="visibility: hidden; position: absolute;">Top Badminton Courts in Sydney</h1>
+    <h2 style="visibility: hidden; position: absolute;">Indoor Badminton Courts</h2>
+
+
+
     <div class="schedule-container">
         <!-- Desktop View -->
         <div class="navigation">
@@ -1608,5 +1625,28 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
 
 
     </script>
+
+    <script type="application/ld+json">
+    // Structured Data (Schema Markup) to help search engines understand your content better, enhancing rich results for SEO
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsActivityLocation",
+      "name": "Sydney Badminton Courts",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Sports Ave",
+        "addressLocality": "Sydney",
+        "addressCountry": "Australia"
+      }
+    }
+    
+    </script>
+
+
+
+    <footer>
+        <p>&copy; 2025 Sydney Badminton Court Finder. All rights reserved.</p>
+    </footer>
+    
 </body>
 </html>
