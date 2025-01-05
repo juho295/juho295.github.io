@@ -824,6 +824,7 @@ let maxDate;
 let originalcourtData;
 let currentStartDate;
 let selectedDay = 0; // For mobile view: 0-6 representing day of week
+let isAllExpanded = false;
 
 function getBookingUrl(location, date) {
     const baseUrl = BOOKING_URLS[location];
@@ -938,9 +939,20 @@ function updateWeekDisplay() {
 
 function toggleCourtNumbers(element) {
     const courtNumbers = element.nextElementSibling;
+    const isExpanding = !courtNumbers.classList.contains('expanded');
     courtNumbers.classList.toggle('expanded');
+    
     const expandIcon = element.querySelector('.expand-icon');
-    expandIcon.textContent = courtNumbers.classList.contains('expanded') ? '▼' : '▶';
+    expandIcon.textContent = isExpanding ? '▼' : '▶';
+    
+    // Check if all sections are now expanded or collapsed
+    const allCourtNumbers = document.querySelectorAll('.court-numbers');
+    const allExpanded = Array.from(allCourtNumbers).every(el => el.classList.contains('expanded'));
+    
+    // Update global state and button text
+    isAllExpanded = allExpanded;
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+    expandCollapseButton.textContent = allExpanded ? 'Collapse All' : 'Expand All';
 }
 
 function getCourtInfo(date, time) {
@@ -1312,20 +1324,28 @@ window.addEventListener('resize', () => {
 
 // Expand/Collapse functions
 function expandCollapseAll() {
-    const expandCollapseAllTag = document.querySelector("#expandCollapseAllTag");
-    if (expandCollapseAllTag.classList.contains("expandCollapseAllOff")) {
-        expandCollapseAllTag.classList.remove("expandCollapseAllOff");
-        expandCollapseAllTag.classList.add("expandCollapseAllOn");
-        document.querySelectorAll('.court-numbers').forEach(div => {
-            div.classList.add('expanded');
-        });
-    } else {
-        expandCollapseAllTag.classList.remove("expandCollapseAllOn");
-        expandCollapseAllTag.classList.add("expandCollapseAllOff");
-        document.querySelectorAll('.court-numbers').forEach(div => {
-            div.classList.remove('expanded');
-        });
-    }
+    isAllExpanded = !isAllExpanded; // Toggle the state
+    
+    // Get all court numbers elements
+    const allCourtNumbers = document.querySelectorAll('.court-numbers');
+    const allExpandIcons = document.querySelectorAll('.expand-icon');
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+    
+    allCourtNumbers.forEach(courtNumbers => {
+        if (isAllExpanded) {
+            courtNumbers.classList.add('expanded');
+        } else {
+            courtNumbers.classList.remove('expanded');
+        }
+    });
+    
+    // Update all expand icons
+    allExpandIcons.forEach(icon => {
+        icon.textContent = isAllExpanded ? '▼' : '▶';
+    });
+    
+    // Update button text
+    expandCollapseButton.textContent = isAllExpanded ? 'Collapse All' : 'Expand All';
 }
 
           // Function to toggle the overlay (expand and contract)
