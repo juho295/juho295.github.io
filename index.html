@@ -645,18 +645,22 @@ input[type="date"].filter-input {
             }
             .overlay {
                 align-items: flex-start; /* Align to top on mobile */
-                padding: 16px; /* Add padding around the overlay */
+                padding: 0; /* Add padding around the overlay */
+				justify-content: flex-start; /* Align to the left */
             }
             .overlay-content {
-                margin: 16px auto; /* Reduced margin */
-                width: 90%; /* Reduced from 100% */
+                margin: 16px;
                 padding: 16px;
-                transform: translateY(10%); /* Shift down slightly from top */
+                max-height: calc(80vh - 32px);
+                transform: translateY(10%);
+                box-sizing: border-box; /* Include padding in width calculation */
             }
 
     .filter-group {
-        margin-bottom: 16px;
-		max-width: 75%;
+        max-width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 14px;
     }
 
     .filter-input {
