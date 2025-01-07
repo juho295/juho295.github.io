@@ -427,7 +427,7 @@ input[type="date"].filter-input {
             }
             
             #mobileSchedule {
-                padding-top: 108px;
+                padding-top: 128px;
             }
 
             .date-tab {
@@ -1629,8 +1629,6 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
 
 //Go to current date and time for mobile view
 
-document.addEventListener('DOMContentLoaded', function() {
-
     // Get current date
     const today = new Date();
     const currentDay = today.getDate();
@@ -1681,10 +1679,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetTimeString = formatTimeString(roundedTime);
     
     // Find the timeslot element
-    const timeSlots = document.querySelectorAll('.mobile-timeslot');
+    const timesList = document.querySelectorAll('.mobile-timeslot');
     let targetSlot = null;
     
-    timeSlots.forEach(slot => {
+    timeList.forEach(slot => {
         const timeElement = slot.querySelector('.mobile-time');
         if (timeElement && timeElement.textContent === targetTimeString) {
             targetSlot = slot;
@@ -1699,9 +1697,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
-});
-
-console.log('version_20240107');
+console.log('version_20240107-2');
 
     </script>
 
