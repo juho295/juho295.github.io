@@ -1682,7 +1682,7 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
     const timesList = document.querySelectorAll('.mobile-timeslot');
     let targetSlot = null;
     
-    timeList.forEach(slot => {
+    timesList.forEach(slot => {
         const timeElement = slot.querySelector('.mobile-time');
         if (timeElement && timeElement.textContent === targetTimeString) {
             targetSlot = slot;
