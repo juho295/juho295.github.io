@@ -1158,6 +1158,7 @@ function initializeMobileView() {
         navigation.style.display = 'none';
         renderMobileDates();
         renderMobileSchedule();
+        goToCurrentDate();
     } else {
         mobileView.style.display = 'none';
         desktopView.style.display = 'grid';
@@ -1627,8 +1628,11 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
     overlayContent.appendChild(resultsDiv);
 }
 
+
+
 //Go to current date and time for mobile view
 
+function goToCurrentDate() {
     // Get current date
     const today = new Date();
     const currentDay = today.getDate();
@@ -1696,8 +1700,9 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
             targetSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 100);
     }
+}
 
-console.log('version_20240107-2');
+console.log('version_20240107-3');
 
     </script>
 
