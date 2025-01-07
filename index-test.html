@@ -13,9 +13,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://storage.googleapis.com https://www.google-analytics.com;">
-
-    <title>Court Finder</title>
+    <meta name="description" content="Discover the top badminton courts in Sydney with our comprehensive court finder. Perfect for finding badminton courts easily.">
+    <meta name="Sydney Badminton" content="Sydney Badminton Court Finder">
+    <meta property="og:title" content="Find Badminton Courts in Sydney">
+    <meta property="og:description" content="Perfect for finding badminton courts easily.">
+    <title>Find Available Badminton Courts in Sydney - Badminton Court Finder</title>
     <style>
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.overlay-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Filter Group Styles */
+.filter-group {
+    margin-bottom: 20px;
+    max-width: 70%; /* Limit width to half */
+
+}
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #24292e;
+}
+
+.filter-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #24292e;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+input[type="date"].filter-input {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #0366d6;
+    box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+}
+
+/* Button Group Styles */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    justify-content: flex-end;
+}
+
+.filter-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-button.submit {
+    background-color: #0366d6;
+    color: white;
+}
+
+.filter-button.submit:hover {
+    background-color: #0366d6;
+}
+
+.filter-button.close {
+    background-color: #f6f8fa;
+    color: #24292e;
+    border: 1px solid rgba(27, 31, 35, 0.15);
+}
+
+.filter-button.close:hover {
+    background-color: #f3f4f6;
+}
+
+/* Results Container Styles */
+.results-container {
+    margin-top: 25px;
+    border-top: 1px solid #eaecef;
+    padding-top: 20px;
+}
+
+.results-container h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #24292e;
+}
+
+.result-card {
+    background: #f6f8fa;
+    border: 1px solid #eaecef;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.result-card strong {
+    color: #24292e;
+}
+
+.result-card .book-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #0366d6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.result-card .book-link:hover {
+    text-decoration: underline;
+}
+
+.findCourtsDate {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.overlay-content button {
+    padding: 8px 16px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #0366d6;
+    color: white;
+    cursor: pointer;
+}
+
+.overlay-content button:hover {
+    background-color: #0056b3;
+}
+
+
+
         .time-slot.no-data {
             border-left: 5px solid #888;
             background-color: rgba(136, 136, 136, 0.03);
@@ -103,29 +273,43 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            gap: 10px;
         }
         .nav-button {
             padding: 8px 16px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #24292f;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        .nav-button:hover:not(:disabled) {
+            background-color: #f3f4f6;
+        }
+        .nav-button:active:not(:disabled) {
+            background-color: #ebecf0;
+        }
+        .nav-button:disabled {
+            background-color: #f6f8fa;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
         .dropdown {
             padding: 8px 16px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            color: #24292f;
+            min-width: 200px;
         }
-        .expandCollapseAllOff {
-            padding: 8px 16px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+        .dropdown:hover {
+            background-color: #f3f4f6;
         }
         .nav-button:disabled {
             background-color: #e9ecef;
@@ -136,8 +320,11 @@
             background-color: #e9ecef;
         }
         .current-week {
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
+            color: #24292f;
+            padding: 0 16px;
+            white-space: nowrap;
         }
         .court-location {
             margin-bottom: 8px;
@@ -195,7 +382,7 @@
             }
             
             .mobile-header {
-                position: sticky;
+                position: fixed;
                 top: 0;
                 background: white;
                 z-index: 100;
@@ -208,7 +395,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 0 10px;
+                padding: 10px;
                 border-bottom: 1px solid #eee;
                 width: 100%;
                 box-sizing: border-box; /* Include padding in width calculation */
@@ -239,6 +426,10 @@
                 display: none;
             }
             
+            #mobileSchedule {
+                padding-top: 108px;
+            }
+
             .date-tab {
                 padding: 8px 12px;
                 border: none;
@@ -460,31 +651,157 @@
             .mobile-timeslot.available:active {
                 background-color: rgba(52,199,89,0.1);
             }
-        }
+            .overlay {
+                align-items: flex-start; /* Align to top on mobile */
+                padding: 0; /* Add padding around the overlay */
+				justify-content: flex-start; /* Align to the left */
+            }
+            .overlay-content {
+                margin: 16px;
+                padding: 16px;
+                max-height: calc(80vh - 32px);
+                transform: translateY(10%);
+                box-sizing: border-box; /* Include padding in width calculation */
+            }
+
+    .filter-group {
+        max-width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 14px;
+    }
+
+    .filter-input {
+        min-height: 30px; /* Minimum touch target size */
+        font-size: 14px; /* Prevent auto-zoom on iOS */
+    }
+
+    /* Specific styling for number inputs */
+    input[type="number"].filter-input {
+        -moz-appearance: textfield; /* Remove spinner arrows in Firefox */
+    }
+
+    input[type="number"].filter-input::-webkit-outer-spin-button,
+    input[type="number"].filter-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Specific styling for date input */
+    input[type="date"].filter-input {
+        min-height: 44px;
+        padding-right: 10px; /* Add space for the calendar icon */
+    }
+
+    /* Specific styling for select */
+    select.filter-input {
+        padding-right: 30px; /* Space for the dropdown arrow */
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+    }
+
+    .button-group {
+        margin-top: 20px;
+        gap: 8px;
+    }
+
+    .filter-button {
+        min-height: 44px; /* Minimum touch target size */
+        width: 100%;
+    }
+}
+      
+
+footer {
+    margin-top: auto; /* Push footer to the bottom */
+    text-align: center; /* Center text horizontally */
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+      
+      
+      
     </style>
 </head>
 <body>
+
+    <!-- SEO -->
+    <h1 style="visibility: hidden; position: absolute;">Top Badminton Courts in Sydney</h1>
+    <h2 style="visibility: hidden; position: absolute;">Indoor Badminton Courts</h2>
+
+
+
     <div class="schedule-container">
         <!-- Desktop View -->
         <div class="navigation">
-            <button class="nav-button" id="prevButton" onclick="previousWeek()">Previous Week</button>
-            <button class="expandCollapseAllOff" id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button>
-            <div class="current-week" id="current-week"></div>
-            <select class="dropdown" id="dropdown" onchange="applyFilter(this.value)">
-                <option value="" disabled selected>Filter by court</option>
-                <option value="All Courts">All courts</option>
-                <option value="Alpha Auburn">Alpha Auburn</option>
-                <option value="Alpha Egerton">Alpha Egerton</option>
-                <option value="Alpha Slough">Alpha Slough</option>
-		<option value="KBC Rydalmere">KBC Rydalmere</option>   
-		<option value="NBC Silverwater">NBC Silverwater</option>
-                <option value="Roketto - Sydney Olympic Park">Roketto</option>
-            </select>
-            <div class="expandCollapseAllOff" id="expandCollapseAllTag" style="display: none;"></div>
-            <button class="nav-button" id="nextButton" onclick="nextWeek()">Next Week</button>
-        </div>
+    <button class="nav-button" id="prevButton" onclick="previousWeek()">Previous Week</button>
+    <button class="nav-button" id="findCourts" onclick="toggleOverlay()">Find Courts</button>
+    <button class="nav-button" id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button>
+    <div class="current-week" id="current-week"></div>
+    <select class="dropdown" id="dropdown" onchange="applyFilter(this.value)">
+        <option value="" disabled selected>Filter by court</option>
+        <option value="All Courts">All courts</option>
+        <option value="Alpha Auburn">Alpha Auburn</option>
+        <option value="Alpha Egerton">Alpha Egerton</option>
+        <option value="Alpha Slough">Alpha Slough</option>
+        <option value="KBC Rydalmere">KBC Rydalmere</option>   
+        <option value="NBC Silverwater">NBC Silverwater</option>
+        <option value="Roketto - Sydney Olympic Park">Roketto</option>
+    </select>
+    <button class="nav-button" id="nextButton" onclick="nextWeek()">Next Week</button>
+</div>
         <div class="schedule-grid" id="schedule"></div>
 
+      
+   <div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <div class="filter-group">
+            <label for="date">Date:</label>
+            <input class="filter-input" type="date" id="date" value="">
+        </div>
+
+        <div class="filter-group">
+            <label for="time-from">From:</label>
+            <select class="filter-input" id="time-from">
+                <option value="8">8:00 AM</option>
+                <option value="9">9:00 AM</option>
+                <option value="10">10:00 AM</option>
+                <option value="11">11:00 AM</option>
+                <option value="12">12:00 PM</option>
+                <option value="13">1:00 PM</option>
+                <option value="14">2:00 PM</option>
+                <option value="15">3:00 PM</option>
+                <option value="16">4:00 PM</option>
+                <option value="17">5:00 PM</option>
+                <option value="18">6:00 PM</option>
+                <option value="19">7:00 PM</option>
+                <option value="20">8:00 PM</option>
+                <option value="21">9:00 PM</option>
+                <option value="22">10:00 PM</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="hours">Hours:</label>
+            <input class="filter-input" type="number" id="hours" value="1" min="1" max="10">
+        </div>
+
+        <div class="filter-group">
+            <label for="courts">Number of Courts:</label>
+            <input class="filter-input" type="number" id="courts" value="1" min="1" max="10">
+        </div>
+
+        <div class="button-group">
+            <button class="filter-button submit" onclick="applyOverlayFilters()">Submit</button>
+            <button class="filter-button close" onclick="toggleOverlay()">Close</button>
+        </div>
+    </div>
+</div>
+      
+      
+      
+      
         <!-- Mobile View -->
         <div class="mobile-view" style="display: none;">
             <div class="mobile-header">
@@ -528,9 +845,20 @@ let maxDate;
 let originalcourtData;
 let currentStartDate;
 let selectedDay = 0; // For mobile view: 0-6 representing day of week
+let isAllExpanded = false;
 
-function getBookingUrl(location) {
-    return BOOKING_URLS[location] || '#'; // Return the mapped URL or '#' if not found
+function getBookingUrl(location, date) {
+    const baseUrl = BOOKING_URLS[location];
+    if (!baseUrl) {
+        return '#';
+    }
+
+    const d = new Date(date);
+    const day = d.getDate();
+    const month = d.getMonth() + 1; // Months are zero-indexed
+    const year = d.getFullYear();
+
+    return `${baseUrl}?day=${day}&month=${month}&year=${year}`;
 }
 
 // Fetch data from API
@@ -632,13 +960,23 @@ function updateWeekDisplay() {
 
 function toggleCourtNumbers(element) {
     const courtNumbers = element.nextElementSibling;
+    const isExpanding = !courtNumbers.classList.contains('expanded');
     courtNumbers.classList.toggle('expanded');
+    
     const expandIcon = element.querySelector('.expand-icon');
-    expandIcon.textContent = courtNumbers.classList.contains('expanded') ? '▼' : '▶';
+    expandIcon.textContent = isExpanding ? '▼' : '▶';
+    
+    // Check if all sections are now expanded or collapsed
+    const allCourtNumbers = document.querySelectorAll('.court-numbers');
+    const allExpanded = Array.from(allCourtNumbers).every(el => el.classList.contains('expanded'));
+    
+    // Update global state and button text
+    isAllExpanded = allExpanded;
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+    expandCollapseButton.textContent = allExpanded ? 'Collapse All' : 'Expand All';
 }
 
 function getCourtInfo(date, time) {
-    // Check if the date is beyond maxDate
     const checkDate = new Date(date);
     const maxDateCheck = new Date(maxDate);
     maxDateCheck.setHours(23, 59, 59, 999);
@@ -675,7 +1013,7 @@ function getCourtInfo(date, time) {
     return Object.entries(courtsByLocation)
         .map(([location, courtNumbers]) => {
             const count = courtNumbers.length;
-            const bookingUrl = getBookingUrl(location);
+            const bookingUrl = getBookingUrl(location, date);
             return `<div class="court-location" onclick="toggleCourtNumbers(this)">
                 <span class="expand-icon">▶</span>${location} (${count})
             </div>
@@ -862,14 +1200,14 @@ function renderMobileSchedule() {
     const currentDate = new Date(currentStartDate);
     currentDate.setDate(currentDate.getDate() + selectedDay);
     const dateStr = currentDate.toISOString().split('T')[0];
-    
+
     mobileSchedule.innerHTML = '';
-    
+
     timeSlots.forEach(time => {
         const courts = getCourtInfoForMobile(dateStr, time);
         const timeSlot = document.createElement('div');
         timeSlot.className = 'mobile-timeslot';
-        
+
         if (courts[0]?.isNoData) {
             timeSlot.classList.add('no-data');
             timeSlot.innerHTML = `
@@ -890,16 +1228,15 @@ function renderMobileSchedule() {
             timeSlot.classList.add('available');
             timeSlot.innerHTML = `
                 <div class="mobile-time">${time}</div>
-                ${formatMobileCourtInfo(courts)}
+                ${formatMobileCourtInfo(courts, dateStr)}
             `;
         }
-        
+
         mobileSchedule.appendChild(timeSlot);
     });
 }
 
 function getCourtInfoForMobile(date, time) {
-    // Check if the date is beyond maxDate
     const checkDate = new Date(date);
     const maxDateCheck = new Date(maxDate);
     maxDateCheck.setHours(23, 59, 59, 999);
@@ -916,9 +1253,9 @@ function getCourtInfoForMobile(date, time) {
     if (!courtData || !Array.isArray(courtData)) {
         return [];
     }
-    
+
     const filtered = courtData.filter(court => court.Date === date && court.Time === time);
-    
+
     if (filtered.length === 0) {
         return [{
             location: 'No courts available',
@@ -942,9 +1279,9 @@ function getCourtInfoForMobile(date, time) {
     }, []);
 }
 
-function formatMobileCourtInfo(courts) {
+function formatMobileCourtInfo(courts, date) {
     return courts.map(locationData => {
-        const bookingUrl = getBookingUrl(locationData.location);
+        const bookingUrl = getBookingUrl(locationData.location, date);
         return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
@@ -1008,22 +1345,55 @@ window.addEventListener('resize', () => {
 
 // Expand/Collapse functions
 function expandCollapseAll() {
-    const expandCollapseAllTag = document.querySelector("#expandCollapseAllTag");
-    if (expandCollapseAllTag.classList.contains("expandCollapseAllOff")) {
-        expandCollapseAllTag.classList.remove("expandCollapseAllOff");
-        expandCollapseAllTag.classList.add("expandCollapseAllOn");
-        document.querySelectorAll('.court-numbers').forEach(div => {
-            div.classList.add('expanded');
-        });
-    } else {
-        expandCollapseAllTag.classList.remove("expandCollapseAllOn");
-        expandCollapseAllTag.classList.add("expandCollapseAllOff");
-        document.querySelectorAll('.court-numbers').forEach(div => {
-            div.classList.remove('expanded');
-        });
-    }
+    isAllExpanded = !isAllExpanded; // Toggle the state
+    
+    // Get all court numbers elements
+    const allCourtNumbers = document.querySelectorAll('.court-numbers');
+    const allExpandIcons = document.querySelectorAll('.expand-icon');
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+    
+    allCourtNumbers.forEach(courtNumbers => {
+        if (isAllExpanded) {
+            courtNumbers.classList.add('expanded');
+        } else {
+            courtNumbers.classList.remove('expanded');
+        }
+    });
+    
+    // Update all expand icons
+    allExpandIcons.forEach(icon => {
+        icon.textContent = isAllExpanded ? '▼' : '▶';
+    });
+    
+    // Update button text
+    expandCollapseButton.textContent = isAllExpanded ? 'Collapse All' : 'Expand All';
 }
 
+          // Function to toggle the overlay (expand and contract)
+    function toggleOverlay() {
+      const overlay = document.getElementById('overlay');
+      const overlayContent = document.querySelector('.overlay-content');
+      
+      // If overlay is not visible, show it with expand effect
+      if (overlay.style.display === 'none' || overlay.style.display === '') {
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+          overlay.style.opacity = '1';
+          overlay.style.transform = 'scale(1)';
+          overlayContent.style.transform = 'scale(1)';
+        }, 10);
+      } else {
+        // Otherwise, hide it with contract effect
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'scale(0)';
+        overlayContent.style.transform = 'scale(0)';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 300);  // Time to match the transition duration
+      }
+    }
+     
+      
 function toggleCourtList(element) {
     const courtList = element.nextElementSibling;
     const arrow = element.querySelector('.court-arrow');
@@ -1082,7 +1452,11 @@ function toggleMobileFilter() {
     const select = document.createElement('select');
     select.className = 'mobile-dropdown';
     select.onchange = function() {
-        applyFilter(this.value);
+      if (this.value === "Find Courts"){
+        toggleOverlay();
+      } else {
+        applyFilter(this.value);        
+      }
         toggleMobileFilter(); // Close the filter after selection
     };
 
@@ -1095,7 +1469,9 @@ function toggleMobileFilter() {
         { value: 'Alpha Slough', text: 'Alpha Slough' },
 	{ value: 'KBC Rydalmere', text: 'KBC Rydalmere' },
 	{ value: 'NBC Silverwater', text: 'NBC Silverwater' },    
-        { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' }
+        { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' },
+        { value: 'Find Courts', text: '► Find Courts ◄' }
+
     ];
 
     options.forEach(option => {
@@ -1111,6 +1487,245 @@ function toggleMobileFilter() {
     document.querySelector('.mobile-header').appendChild(filterContainer);
 }
 
+
+
+
+
+function applyOverlayFilters() {
+    const date = document.getElementById('date').value;
+    const startTime = parseInt(document.getElementById('time-from').value);
+    const hours = parseInt(document.getElementById('hours').value);
+    const requiredCourts = parseInt(document.getElementById('courts').value);
+
+    // Validate inputs
+    if (!date || !startTime || !hours || !requiredCourts) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    // Create array of consecutive hours needed
+    const timeRange = Array.from({length: hours}, (_, i) => startTime + i);
+    
+    // First, group courts by location and time
+    const courtsByLocationAndTime = courtData.reduce((acc, court) => {
+        let courtTime = parseInt(court.Time.split(':')[0]);
+        
+        // Convert to 24-hour format
+        if (court.Time.toLowerCase().includes('pm') && courtTime !== 12) {
+            courtTime += 12;
+        }
+        if (court.Time.toLowerCase().includes('am') && courtTime === 12) {
+            courtTime = 0;
+        }
+        
+        if (court.Date === date && timeRange.includes(courtTime)) {
+            if (!acc[court.Location]) {
+                acc[court.Location] = {};
+            }
+            if (!acc[court.Location][courtTime]) {
+                acc[court.Location][courtTime] = new Set();
+            }
+            acc[court.Location][courtTime].add(court.Court);
+        }
+        return acc;
+    }, {});
+
+    // Find courts that are available for all requested hours
+    const availableLocations = [];
+    
+    for (const [location, timeSlots] of Object.entries(courtsByLocationAndTime)) {
+        // Get courts that are available for all hours in the range
+        const availableCourts = new Set();
+        let firstTimeSlot = true;
+
+        for (const hour of timeRange) {
+            const courtsAtTime = timeSlots[hour] || new Set();
+            
+            if (firstTimeSlot) {
+                // Initialize with courts from first time slot
+                courtsAtTime.forEach(court => availableCourts.add(court));
+                firstTimeSlot = false;
+            } else {
+                // Keep only courts that are available in all time slots
+                for (const court of availableCourts) {
+                    if (!courtsAtTime.has(court)) {
+                        availableCourts.delete(court);
+                    }
+                }
+            }
+        }
+
+        // Check if we have enough courts available for all hours
+        if (availableCourts.size >= requiredCourts) {
+            availableLocations.push({
+                location,
+                courts: Array.from(availableCourts)
+            });
+        }
+    }
+
+    // Display results
+    displayResults(availableLocations, date, startTime, hours, requiredCourts);
+}
+
+function displayResults(results, date, startTime, hours, requiredCourts) {
+    const overlayContent = document.querySelector('.overlay-content');
+    
+    // Create a new div for results
+    const resultsDiv = document.createElement('div');
+    resultsDiv.style.marginTop = '20px';
+    resultsDiv.style.textAlign = 'left';
+
+    // Remove any existing results
+    const existingResults = overlayContent.querySelector('.results-container');
+    if (existingResults) {
+        existingResults.remove();
+    }
+
+    resultsDiv.className = 'results-container';
+
+    // Convert 24h to 12h format
+    function formatTime(hour) {
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:00 ${ampm}`;
+    }
+
+    const startTimeFormatted = formatTime(startTime);
+    const endTimeFormatted = formatTime(startTime + hours);
+
+    if (results.length === 0) {
+        resultsDiv.innerHTML = `
+            <p style="color: #666;">No locations found with ${requiredCourts} court(s) available for ${hours} consecutive hour(s) 
+            starting from ${startTimeFormatted} on ${date}</p>
+        `;
+    } else {
+        let html = `
+            <h3 style="color: #0366d6;">Available Courts</h3>
+            <div style="background: #f6f8fa; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+                <p><strong>Date:</strong> ${date}</p>
+                <p><strong>Time:</strong> ${startTimeFormatted} - ${endTimeFormatted} (${hours} hours)</p>
+                <p><strong>Courts needed:</strong> ${requiredCourts}</p>
+            </div>`;
+
+        results.forEach(({location, courts}) => {
+            const bookingUrl = getBookingUrl(location, date);
+            html += `
+                <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid #0366d6; background: #fff;">
+                    <strong style="color: #0366d6;">${location}</strong><br>
+                    <span style="color: #666;">Available courts: ${courts.join(', ')}</span><br>
+                    <a href="${bookingUrl}" target="_blank" rel="noopener noreferrer" 
+                       style="color: #0366d6; text-decoration: none; display: inline-block; margin-top: 8px;">
+                        Book Now →
+                    </a>
+                </div>
+            `;
+        });
+        resultsDiv.innerHTML = html;
+    }
+
+    overlayContent.appendChild(resultsDiv);
+}
+
+//Go to current date and time for mobile view
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Get current date
+    const today = new Date();
+    const currentDay = today.getDate();
+    const currentMonth = today.toLocaleString('default', { month: 'short' });
+    
+    // Find all date-tab buttons
+    const dateTabs = document.querySelectorAll('.date-tab');
+    
+    // Loop through tabs to find matching date
+    dateTabs.forEach(tab => {
+        const dateSpan = tab.querySelector('.date');
+        if (dateSpan) {
+            const tabDate = dateSpan.textContent; // e.g., "7 Jan"
+            const [day, month] = tabDate.split(' ');
+            
+            // Check if this tab matches current date
+            if (parseInt(day) === currentDay && month === currentMonth) {
+                // Simulate click on the matching tab
+                tab.click();
+            }
+        }
+    });
+
+    // Function to round up to nearest hour
+    function roundToNextHour(date) {
+        const roundedDate = new Date(date);
+        roundedDate.setHours(date.getHours() + 1);
+        roundedDate.setMinutes(0);
+        roundedDate.setSeconds(0);
+        roundedDate.setMilliseconds(0);
+        return roundedDate;
+    }
+
+    // Get current time and round up to next hour
+    const now = new Date();
+    const roundedTime = roundToNextHour(now);
+    
+    // Format the time string to match the HTML format
+    // Convert 24h to 12h format with am/pm
+    function formatTimeString(date) {
+        let hours = date.getHours();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // handle midnight (0)
+        return `${hours}:00${ampm}`;
+    }
+    
+    const targetTimeString = formatTimeString(roundedTime);
+    
+    // Find the timeslot element
+    const timeSlots = document.querySelectorAll('.mobile-timeslot');
+    let targetSlot = null;
+    
+    timeSlots.forEach(slot => {
+        const timeElement = slot.querySelector('.mobile-time');
+        if (timeElement && timeElement.textContent === targetTimeString) {
+            targetSlot = slot;
+        }
+    });
+    
+    // If we found the target time slot, scroll to it
+    if (targetSlot) {
+        // Add a small delay to ensure other initializations are complete
+        setTimeout(() => {
+            targetSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    }
+
+});
+
+console.log('version_20240107');
+
     </script>
+
+    <script type="application/ld+json">
+    // Structured Data (Schema Markup) to help search engines understand your content better, enhancing rich results for SEO
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsActivityLocation",
+      "name": "Sydney Badminton Courts",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Sports Ave",
+        "addressLocality": "Sydney",
+        "addressCountry": "Australia"
+      }
+    }
+    
+    </script>
+
+
+
+    <footer>
+        <p>&copy; 2025 Sydney Badminton Court Finder. All rights reserved.</p>
+    </footer>
+    
 </body>
 </html>
