@@ -320,7 +320,7 @@ input[type="date"].filter-input {
             background-color: #e9ecef;
         }
         .current-week {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             color: #24292f;
             padding: 0 16px;
@@ -382,7 +382,7 @@ input[type="date"].filter-input {
             }
             
             .mobile-header {
-                position: sticky;
+                position: fixed;
                 top: 0;
                 background: white;
                 z-index: 100;
@@ -395,7 +395,7 @@ input[type="date"].filter-input {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 0 10px;
+                padding: 10px;
                 border-bottom: 1px solid #eee;
                 width: 100%;
                 box-sizing: border-box; /* Include padding in width calculation */
@@ -426,6 +426,10 @@ input[type="date"].filter-input {
                 display: none;
             }
             
+            #mobileSchedule {
+                padding-top: 54px;
+            }
+
             .date-tab {
                 padding: 8px 12px;
                 border: none;
@@ -716,9 +720,139 @@ footer {
     background-color: #f4f4f4;
 }
       
-      
-      
-    </style>
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
+    height: 54px;
+    margin-bottom: 18px;
+}
+.filter-label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.filter-heading {
+    font-weight: 600;
+}
+.filter-button-container {
+    display: flex;
+    align-items: center;
+    width: 20%
+}
+.filter-button-container .nav-button, .dropdown {
+    width: 100%;
+}
+.filter-divider {
+    width: 1px;
+    background-color: #ddd;
+    height: 36px;
+    align-self: center;
+}
+.filter-icon {
+    height: 14px;
+    margin-right: 4px;
+    top: 2px;
+    position: relative;
+}    
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.lds-ring {
+    color: #1c4c5b;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid currentColor;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: currentColor transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+
+.loading-text {
+    color: #1c4c5b;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-align: center;
+    max-width: 80%;
+    font-style: italic;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@keyframes lds-ring {
+    0% {
+    transform: rotate(0deg);
+    }
+    100% {
+    transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .lds-ring {
+    width: 60px;
+    height: 60px;
+    }
+    
+    .lds-ring div {
+    width: 48px;
+    height: 48px;
+    margin: 6px;
+    border-width: 6px;
+    }
+
+    .loading-text {
+    font-size: 0.875rem;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+</style>
 </head>
 <body>
 
@@ -727,29 +861,47 @@ footer {
     <h2 style="visibility: hidden; position: absolute;">Indoor Badminton Courts</h2>
 
 
-
-    <div class="schedule-container">
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-container">
+          <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <p class="loading-text">Sydney Badminton Court Finder</p>
+        </div>
+    </div>
+    <div class="schedule-container hidden">
         <!-- Desktop View -->
         <div class="navigation">
-    <button class="nav-button" id="prevButton" onclick="previousWeek()">Previous Week</button>
-    <button class="nav-button" id="findCourts" onclick="toggleOverlay()">Find Courts</button>
-    <button class="nav-button" id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button>
-    <div class="current-week" id="current-week"></div>
-    <select class="dropdown" id="dropdown" onchange="applyFilter(this.value)">
-        <option value="" disabled selected>Filter by court</option>
-        <option value="All Courts">All courts</option>
-        <option value="Alpha Auburn">Alpha Auburn</option>
-        <option value="Alpha Egerton">Alpha Egerton</option>
-        <option value="Alpha Slough">Alpha Slough</option>
-        <option value="KBC Rydalmere">KBC Rydalmere</option>   
-        <option value="NBC Silverwater">NBC Silverwater</option>
-        <option value="Roketto - Sydney Olympic Park">Roketto</option>
-    </select>
-    <button class="nav-button" id="nextButton" onclick="nextWeek()">Next Week</button>
-</div>
+            <button class="nav-button" id="prevButton" onclick="previousWeek()">Previous Week</button>
+            <div class="current-week" id="current-week"></div>
+            <button class="nav-button" id="nextButton" onclick="nextWeek()">Next Week</button>
+        </div>
+        <div class="filter-bar">
+            <div class="filter-label filter-heading"><span><img class="filter-icon" alt="Advanced Search" src="https://juho295.github.io/assets/images/settings-icon.svg"></span>View Options</div>
+            <div class="filter-divider"></div>
+            <div class="filter-label filter-subheading">Courts List:</div>
+            <div class="filter-button-container"><button class="nav-button" id="expandCollapseButton" onclick="expandCollapseAll()">Expand/Collapse All</button></div>
+            <div class="filter-divider"></div>
+            <div class="filter-label filter-subheading">Filter by Center:</div>
+            <div class="filter-button-container">
+                <select class="dropdown" id="dropdown" onchange="applyFilter(this.value)">
+                    <option value="" disabled selected>Filter by court</option>
+                    <option value="All Courts">All courts</option>
+                    <option value="Alpha Auburn">Alpha Auburn</option>
+                    <option value="Alpha Egerton">Alpha Egerton</option>
+                    <option value="Alpha Slough">Alpha Slough</option>
+                    <option value="KBC Rydalmere">KBC Rydalmere</option>   
+                    <option value="NBC Silverwater">NBC Silverwater</option>
+                    <option value="Roketto - Sydney Olympic Park">Roketto</option>
+                </select>
+            </div>
+            <div class="filter-divider"></div>
+            <div class="filter-button-container"><button class="nav-button" id="findCourts" onclick="toggleOverlay()"><span><img class="filter-icon" alt="Advanced Search" src="https://juho295.github.io/assets/images/search-icon.svg"></span>Advanced Search</button></div>
+        </div>
         <div class="schedule-grid" id="schedule"></div>
-
-      
    <div class="overlay" id="overlay">
     <div class="overlay-content">
         <div class="filter-group">
@@ -911,6 +1063,7 @@ async function initialize() {
         
         createSchedule();
         initializeMobileView();
+        hideLoader();
     }
 }
 
@@ -1143,6 +1296,7 @@ function initializeMobileView() {
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.schedule-grid');
     const navigation = document.querySelector('.navigation');
+    const filterBar = document.querySelector('.filter-bar');
 
     // Remove any open filter dropdown when switching views
     const existingFilter = document.getElementById('mobile-filter-dropdown');
@@ -1152,12 +1306,15 @@ function initializeMobileView() {
         mobileView.style.display = 'block';
         desktopView.style.display = 'none';
         navigation.style.display = 'none';
+        filterBar.style.display = 'none';
         renderMobileDates();
         renderMobileSchedule();
+        goToCurrentDate();
     } else {
         mobileView.style.display = 'none';
         desktopView.style.display = 'grid';
         navigation.style.display = 'flex';
+        filterBar.style.display = 'flex';
         createSchedule();
     }
 }
@@ -1623,6 +1780,89 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
     overlayContent.appendChild(resultsDiv);
 }
 
+
+
+//Go to current date and time for mobile view
+
+function goToCurrentDate() {
+    // Get current date
+    const today = new Date();
+    const currentDay = today.getDate();
+    const currentMonth = today.toLocaleString('default', { month: 'short' });
+    
+    // Find all date-tab buttons
+    const dateTabs = document.querySelectorAll('.date-tab');
+    
+    // Loop through tabs to find matching date
+    dateTabs.forEach(tab => {
+        const dateSpan = tab.querySelector('.date');
+        if (dateSpan) {
+            const tabDate = dateSpan.textContent; // e.g., "7 Jan"
+            const [day, month] = tabDate.split(' ');
+            
+            // Check if this tab matches current date
+            if (parseInt(day) === currentDay && month === currentMonth) {
+                // Simulate click on the matching tab
+                tab.click();
+            }
+        }
+    });
+
+    // Function to round up to nearest hour
+    function roundToNextHour(date) {
+        const roundedDate = new Date(date);
+        roundedDate.setHours(date.getHours() + 1);
+        roundedDate.setMinutes(0);
+        roundedDate.setSeconds(0);
+        roundedDate.setMilliseconds(0);
+        return roundedDate;
+    }
+
+    // Get current time and round up to next hour
+    const now = new Date();
+    const roundedTime = roundToNextHour(now);
+    
+    // Format the time string to match the HTML format
+    // Convert 24h to 12h format with am/pm
+    function formatTimeString(date) {
+        let hours = date.getHours();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // handle midnight (0)
+        return `${hours}:00${ampm}`;
+    }
+    
+    const targetTimeString = formatTimeString(roundedTime);
+    
+    // Find the timeslot element
+    const timesList = document.querySelectorAll('.mobile-timeslot');
+    let targetSlot = null;
+    
+    timesList.forEach(slot => {
+        const timeElement = slot.querySelector('.mobile-time');
+        if (timeElement && timeElement.textContent === targetTimeString) {
+            targetSlot = slot;
+        }
+    });
+    
+    // If we found the target time slot, scroll to it
+    if (targetSlot) {
+        // Add a small delay to ensure other initializations are complete
+        setTimeout(() => {
+            targetSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    }
+}
+
+function hideLoader() {
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  document.getElementsByClassName('schedule-container')[0].classList.remove('hidden');
+}
+
+// To show the loader
+function showLoader() {
+  document.getElementById('loadingOverlay').classList.remove('hidden');
+}
 
     </script>
 
