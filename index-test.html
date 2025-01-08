@@ -1296,6 +1296,7 @@ function initializeMobileView() {
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.schedule-grid');
     const navigation = document.querySelector('.navigation');
+    const filterBar = document.querySelector('.filter-bar');
 
     // Remove any open filter dropdown when switching views
     const existingFilter = document.getElementById('mobile-filter-dropdown');
@@ -1305,6 +1306,7 @@ function initializeMobileView() {
         mobileView.style.display = 'block';
         desktopView.style.display = 'none';
         navigation.style.display = 'none';
+        filterBar.style.display = 'none';
         renderMobileDates();
         renderMobileSchedule();
         goToCurrentDate();
@@ -1312,6 +1314,7 @@ function initializeMobileView() {
         mobileView.style.display = 'none';
         desktopView.style.display = 'grid';
         navigation.style.display = 'flex';
+        filterBar.style.display = 'flex';
         createSchedule();
     }
 }
