@@ -855,6 +855,58 @@ footer {
     display: none !important;
 }
 
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
 </style>
 </head>
 <body>
@@ -903,6 +955,16 @@ footer {
             </div>
             <div class="filter-divider"></div>
             <div class="filter-button-container"><button class="nav-button" id="findCourts" onclick="toggleOverlay()"><span><img class="filter-icon" alt="Advanced Search" src="https://juho295.github.io/assets/images/search-icon.svg"></span>Advanced Search</button></div>
+        
+            <div class="toggle-switch">
+                <span id="toggleText">Show Social</span>
+                <label class="switch">
+                    <input type="checkbox" id="dataToggle" checked onchange="toggleDataVisibility()">
+                    <span class="slider"></span>
+                </label>
+            </div>  
+
+            
         </div>
         <div class="schedule-grid" id="schedule"></div>
    <div class="overlay" id="overlay">
@@ -1868,6 +1930,45 @@ function hideLoader() {
 function showLoader() {
   document.getElementById('loadingOverlay').classList.remove('hidden');
 }
+
+function toggleDataVisibility() {
+    const isChecked = document.getElementById('dataToggle').checked;
+    const toggleText = document.getElementById('toggleText');
+    const timeSlots = document.querySelectorAll('.time-slot');
+    const mobileTimeSlots = document.querySelectorAll('.mobile-timeslot');
+
+    // Update toggle text
+    toggleText.textContent = isChecked ? 'Show Social' : 'Show Court';
+
+    // Toggle desktop view
+    timeSlots.forEach(slot => {
+        const courtInfo = slot.querySelector('.court-info');
+        if (courtInfo) {
+            if (isChecked) {
+                courtInfo.style.display = 'block';
+                slot.classList.remove('hidden-data');
+            } else {
+                courtInfo.style.display = 'none';
+                slot.classList.add('hidden-data');
+            }
+        }
+    });
+
+    // Toggle mobile view
+    mobileTimeSlots.forEach(slot => {
+        const courtInfo = slot.querySelector('.mobile-court');
+        if (courtInfo) {
+            if (isChecked) {
+                courtInfo.style.display = 'block';
+                slot.classList.remove('hidden-data');
+            } else {
+                courtInfo.style.display = 'none';
+                slot.classList.add('hidden-data');
+            }
+        }
+    });
+}
+
 
     </script>
 
