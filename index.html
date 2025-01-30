@@ -1234,9 +1234,9 @@ function getStartOfWeek(date) {
 
 function formatDate(date) {
     const d = new Date(date);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
-
 function getDateForDayIndex(startDate, dayIndex) {
     const date = new Date(startDate);
     date.setDate(date.getDate() + dayIndex);
@@ -2102,74 +2102,78 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
 //Go to current date and time for mobile view
 
 function goToCurrentDate() {
-    // Get current date
     const today = new Date();
-    const currentDay = today.getDate();
-    const currentMonth = today.toLocaleString('default', { month: 'short' });
+    // Move to the closest available date, not before minDate and not after maxDate
+    let targetDate = new Date(today);
     
-    // Find all date-tab buttons
-    const dateTabs = document.querySelectorAll('.date-tab');
+    // If today is before minDate, use minDate
+    if (today < minDate) {
+        targetDate = new Date(minDate);
+    }
+    // If today is after maxDate, use maxDate
+    else if (today > maxDate) {
+        targetDate = new Date(maxDate);
+    }
     
-    // Loop through tabs to find matching date
-    dateTabs.forEach(tab => {
-        const dateSpan = tab.querySelector('.date');
-        if (dateSpan) {
-            const tabDate = dateSpan.textContent; // e.g., "7 Jan"
-            const [day, month] = tabDate.split(' ');
-            
-            // Check if this tab matches current date
-            if (parseInt(day) === currentDay && month === currentMonth) {
-                // Simulate click on the matching tab
-                tab.click();
+    // Set to start of week containing target date
+    currentStartDate = getStartOfWeek(targetDate);
+    
+    // For mobile view, calculate the day offset
+    const daysDiff = Math.floor((today - currentStartDate) / (1000 * 60 * 60 * 24));
+    selectedDay = Math.max(0, Math.min(6, daysDiff));
+    
+    // Update both desktop and mobile views
+    if (window.innerWidth <= 768) {
+        renderMobileDates();
+        renderMobileSchedule();
+        
+        // Scroll to the current date tab
+        const mobileDate = document.getElementById('mobileDates');
+        if (mobileDate) {
+            const dateElements = mobileDate.getElementsByClassName('date-tab');
+            if (dateElements[selectedDay]) {
+                dateElements[selectedDay].scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest',
+                    inline: 'center' 
+                });
             }
         }
-    });
-
-    // Function to round up to nearest hour
-    function roundToNextHour(date) {
-        const roundedDate = new Date(date);
-        roundedDate.setHours(date.getHours() + 1);
-        roundedDate.setMinutes(0);
-        roundedDate.setSeconds(0);
-        roundedDate.setMilliseconds(0);
-        return roundedDate;
-    }
-
-    // Get current time and round up to next hour
-    const now = new Date();
-    const roundedTime = roundToNextHour(now);
-    
-    // Format the time string to match the HTML format
-    // Convert 24h to 12h format with am/pm
-    function formatTimeString(date) {
-        let hours = date.getHours();
-        const ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // handle midnight (0)
-        return `${hours}:00${ampm}`;
-    }
-    
-    const targetTimeString = formatTimeString(roundedTime);
-    
-    // Find the timeslot element
-    const timesList = document.querySelectorAll('.mobile-timeslot');
-    let targetSlot = null;
-    
-    timesList.forEach(slot => {
-        const timeElement = slot.querySelector('.mobile-time');
-        if (timeElement && timeElement.textContent === targetTimeString) {
-            targetSlot = slot;
+    } else {
+        // Check if we're in social view or court view
+        const toggle = document.getElementById('dataToggle');
+        if (toggle && toggle.checked) {
+            displaySocialSchedule(socialData);
+        } else {
+            createSchedule();
         }
-    });
+    }
     
-    // If we found the target time slot, scroll to it
-    if (targetSlot) {
-        // Add a small delay to ensure other initializations are complete
-        setTimeout(() => {
-            targetSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
+    // Update navigation buttons state
+    updateNavigationButtons();
+    updateWeekDisplay();
+    
+    // Update mobile current date display
+    const mobileCurrent = document.getElementById('mobileCurrent');
+    if (mobileCurrent) {
+        const endDate = new Date(currentStartDate);
+        endDate.setDate(endDate.getDate() + 6);
+        mobileCurrent.textContent = `${formatDate(currentStartDate)} - ${formatDate(endDate)}`;
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handler for any "Today" or "Current" buttons
+    const currentDateButton = document.querySelector('.nav-button[onclick="goToCurrentDate()"]');
+    if (currentDateButton) {
+        currentDateButton.addEventListener('click', goToCurrentDate);
+    }
+    
+    // Initialize the view to current date if it's the first load
+    if (!currentStartDate) {
+        goToCurrentDate();
+    }
+});
 
 function hideLoader() {
   document.getElementById('loadingOverlay').classList.add('hidden');
