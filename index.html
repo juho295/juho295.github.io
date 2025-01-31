@@ -265,7 +265,7 @@ input[type="date"].filter-input {
             text-decoration: none;
         }
         .court-list-link::after {
-            content: "ðŸ¡†";
+            content: "🡆";
             font-size: 0.8em;
             margin-left: 4px;
             display: inline-block;
@@ -465,6 +465,8 @@ input[type="date"].filter-input {
 
             #mobileSchedule {
                 padding-top: 128px;
+                min-width:400px;
+                max-width:600px;
             }
 
             .date-tab {
@@ -1328,7 +1330,7 @@ function toggleCourtNumbers(element) {
     // Find and update the expand icon
     const expandIcon = element.querySelector('.expand-icon');
     if (expandIcon) {
-        expandIcon.textContent = courtNumbers.classList.contains('expanded') ? 'â–¼' : 'â–¶';
+        expandIcon.textContent = courtNumbers.classList.contains('expanded') ? '▶' : '▼';
     }
 }
 
@@ -1655,7 +1657,7 @@ function renderMobileSchedule() {
                     ${sessions.map(session => `
                         <div class="mobile-court">
                             <div class="mobile-court-header" onclick="toggleMobileCourtList(this)">
-                                <span class="court-arrow">â–¶</span>
+                                <span class="court-arrow">▶</span>
                                 <span class="mobile-court-name">${session.Name} [${session.Location}]</span>
                             </div>
                             <div class="mobile-court-list">
@@ -1722,7 +1724,7 @@ function formatMobileSocialInfo(sessions) {
     return sessions.map(session => `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleMobileCourtList(this)">
-                <span class="court-arrow">â–¶</span>
+                <span class="court-arrow">▶</span>
                 <span class="mobile-court-name">${session.Name} [${session.Location}]</span>
             </div>
             <div class="mobile-court-list">
@@ -1752,7 +1754,7 @@ function toggleMobileCourtList(element) {
     const isExpanded = courtList.style.maxHeight !== '0px' && courtList.style.maxHeight !== '';
 
     // Toggle the arrow
-    arrow.textContent = isExpanded ? 'â–¶' : 'â–¼';
+    arrow.textContent = isExpanded ? '▼' : '▶';
 
     // Toggle the content
     if (isExpanded) {
@@ -1811,7 +1813,7 @@ function formatMobileCourtInfo(courts, date) {
         return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
-                <span class="court-arrow">â–¶</span>
+                <span class="court-arrow">▶</span>
                 <span class="mobile-court-name">${locationData.location}</span>
                 <span class="mobile-court-count">(${locationData.count})</span>
             </div>
@@ -1895,7 +1897,7 @@ function expandCollapseAll() {
     });
 
     allExpandIcons.forEach(icon => {
-        icon.textContent = isAllExpanded ? 'â–¼' : 'â–¶';
+        icon.textContent = isAllExpanded ? '▼' : '▶';
     });
 
     expandButton.textContent = isAllExpanded ? 'Collapse All' : 'Expand All';
@@ -1933,10 +1935,10 @@ function toggleCourtList(element) {
     // Toggle the visibility
     if (courtList.style.maxHeight) {
         courtList.style.maxHeight = null;
-        arrow.textContent = 'â–¶';
+        arrow.textContent = '▶';
     } else {
         courtList.style.maxHeight = courtList.scrollHeight + "px";
-        arrow.textContent = 'â–¼';
+        arrow.textContent = '▼';
     }
 }
 
