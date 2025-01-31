@@ -17,7 +17,6 @@
     <meta name="Sydney Badminton" content="Sydney Badminton Court Finder">
     <meta property="og:title" content="Find Badminton Courts in Sydney">
     <meta property="og:description" content="Perfect for finding badminton courts easily.">
-    <meta name="robots" content="index, follow">
     <title>Find Available Badminton Courts in Sydney - Badminton Court Finder</title>
     <style>
 
@@ -80,7 +79,7 @@
 }
 
 p {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;}
-	    
+
 input[type="date"].filter-input {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -218,7 +217,6 @@ input[type="date"].filter-input {
             text-align: center;
             font-weight: bold;
             background-color: #faf9fc;
-			font-size: 14px;
         }
         .court-list-link {
             color: #002c5a;
@@ -227,7 +225,6 @@ input[type="date"].filter-input {
             padding: 4px 8px;
             border-radius: 4px;
             transition: all 0.2s ease;
-			font-size: 12px;
         }
         .court-list-link:hover {
             background-color: #0366d6;
@@ -235,7 +232,7 @@ input[type="date"].filter-input {
             text-decoration: none;
         }
         .court-list-link::after {
-            content: "🡆";
+            content: "->";
             font-size: 0.8em;
             margin-left: 4px;
             display: inline-block;
@@ -335,7 +332,6 @@ input[type="date"].filter-input {
         .court-location {
             margin-bottom: 8px;
             line-height: 1.4;
-			font-size: 12px;
         }
         .court-number {
             display: inline-block;
@@ -373,21 +369,21 @@ input[type="date"].filter-input {
                 margin: 0;
                 padding: 0;
             }
-            
+
             .schedule-container {
                 padding: 0;
             }
-            
+
             .schedule-grid,
             .navigation {
                 display: none; /* Hide desktop elements */
             }
-            
+
             .mobile-view {
                 width: 100%;
                 overflow-x: hidden; /* Prevent horizontal scrolling of the entire view */
             }
-            
+
             .mobile-header {
                 position: fixed;
                 top: 0;
@@ -395,9 +391,10 @@ input[type="date"].filter-input {
                 z-index: 100;
                 border-bottom: 1px solid #eee;
                 width: 100%;
+                max-width:600px;
                 overflow: hidden; /* Contains the scrolling dates */
             }
-            
+
             .mobile-nav {
                 display: flex;
                 align-items: center;
@@ -405,9 +402,10 @@ input[type="date"].filter-input {
                 padding: 10px;
                 border-bottom: 1px solid #eee;
                 width: 100%;
+                max-width:600px;
                 box-sizing: border-box; /* Include padding in width calculation */
             }
-            
+
             .mobile-current-date {
                 text-align: center;
                 font-size: 14px;
@@ -415,7 +413,7 @@ input[type="date"].filter-input {
                 flex-grow: 1;
                 padding: 0 10px;
             }
-            
+
             .mobile-dates {
                 display: flex;
                 overflow-x: auto;
@@ -428,13 +426,15 @@ input[type="date"].filter-input {
                 min-width: 0;
                 margin: 0;
             }
-            
+
             .mobile-dates::-webkit-scrollbar {
                 display: none;
             }
-            
+
             #mobileSchedule {
                 padding-top: 128px;
+                min-width:400px;
+                max-width:600px;
             }
 
             .date-tab {
@@ -452,12 +452,12 @@ input[type="date"].filter-input {
                 cursor: pointer;
                 white-space: nowrap; /* Prevents text wrapping */
             }
-            
+
             .date-tab.active {
                 background-color: #f0f0f0;
                 font-weight: 500;
             }
-            
+
             .date-tab .day {
                 font-weight: 500;
             }
@@ -468,21 +468,21 @@ input[type="date"].filter-input {
             .date-tab.active {
                 border-bottom: 2px solid #000;
             }
-            
+
             .mobile-timeslot {
                 padding: 12px 16px; /* Increase horizontal padding */
                 margin-bottom: 1px; /* Add slight separation between time slots */
             }
-            
+
             .mobile-time {
                 font-weight: 500;
                 margin-bottom: 12px;
             }
-            
+
             .mobile-court {
                 width: 100%; /* Ensure full width */
             }
-            
+
             .mobile-court-name {
                 flex-grow: 1;
                 font-weight: 500;
@@ -491,14 +491,14 @@ input[type="date"].filter-input {
                 white-space: normal; /* Allow text to wrap if needed */
                 line-height: 1.4; /* Better line height for readability */
             }
-            
+
             .mobile-court-count {
                 color: #666;
                 font-size: 13px;
                 white-space: nowrap; /* Keep the count on one line */
                 padding-left: 8px; /* Space from the name */
             }
-            
+
             .mobile-court-numbers {
                 display: flex;
                 flex-wrap: wrap;
@@ -564,7 +564,7 @@ input[type="date"].filter-input {
                 cursor: pointer;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
-            
+
             .mobile-filter-dropdown {
                 position: fixed;
                 bottom: 84px; /* Position above the filter button */
@@ -610,20 +610,6 @@ input[type="date"].filter-input {
                 font-size: 12px;
                 transition: transform 0.3s ease;
                 flex-shrink: 0; /* Prevent arrow from shrinking */
-            }
-			.mobile-court-info {
-                padding: 12px;
-                font-size: 13px;
-                line-height: 1.5;
-                color: #666;
-            }
-
-            .mobile-court-info div {
-                margin-bottom: 8px;
-            }
-
-            .mobile-court-info strong {
-                color: #24292f;
             }
 
             .mobile-court-list {
@@ -684,70 +670,6 @@ input[type="date"].filter-input {
                 transform: translateY(10%);
                 box-sizing: border-box; /* Include padding in width calculation */
             }
-            .mobile-toggle-container {
-                display: flex;
-                justify-content: center;
-                padding: 8px 0;
-                background-color: white;
-                border-bottom: 1px solid #eee;
-            }
-            .toggle-switch {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 46px;
-                height: 24px;
-            }
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: .4s;
-                border-radius: 24px;
-            }
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 18px;
-                width: 18px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-
-            input:checked + .slider {
-                background-color: #2196F3;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(22px);
-            }
-
-            #mobileToggleText {
-                font-size: 14px;
-                color: #24292f;
-            }
-
-/* Adjust the mobile schedule padding to account for the new toggle */
-            #mobileSchedule {
-                padding-top: 160px; /* Increase this value to account for the toggle */
-            }
-			
 
     .filter-group {
         max-width: 75%;
@@ -796,7 +718,7 @@ input[type="date"].filter-input {
         width: 100%;
     }
 }
-      
+
 
 footer {
     margin-top: auto; /* Push footer to the bottom */
@@ -804,7 +726,7 @@ footer {
     padding: 20px;
     background-color: #f4f4f4;
 }
-      
+
 .filter-bar {
     display: flex;
     justify-content: space-between;
@@ -840,7 +762,7 @@ footer {
     margin-right: 4px;
     top: 2px;
     position: relative;
-}    
+}
 
 .loading-overlay {
     position: fixed;
@@ -920,7 +842,7 @@ footer {
     width: 60px;
     height: 60px;
     }
-    
+
     .lds-ring div {
     width: 48px;
     height: 48px;
@@ -935,58 +857,6 @@ footer {
 
 .hidden {
     display: none !important;
-}
-
-.toggle-switch {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-    margin-left: 10px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
 }
 
 </style>
@@ -1030,23 +900,13 @@ input:checked + .slider:before {
                     <option value="Alpha Egerton">Alpha Egerton</option>
                     <option value="Alpha Slough">Alpha Slough</option>
 		    <option value="BadmintonWorx Botany">BadmintonWorx - Botany</option>
-                    <option value="KBC Rydalmere">KBC Rydalmere</option>   
+                    <option value="KBC Rydalmere">KBC Rydalmere</option>
                     <option value="NBC Silverwater">NBC Silverwater</option>
                     <option value="Roketto - Sydney Olympic Park">Roketto</option>
                 </select>
             </div>
             <div class="filter-divider"></div>
             <div class="filter-button-container"><button class="nav-button" id="findCourts" onclick="toggleOverlay()"><span><img class="filter-icon" alt="Advanced Search" src="https://juho295.github.io/assets/images/search-icon.svg"></span>Advanced Search</button></div>
-        
-            <div class="toggle-switch">
-                <span id="toggleText">Show Social</span>
-                <label class="switch">
-                    <input type="checkbox" id="dataToggle" onchange="toggleDataVisibility()">
-                    <span class="slider"></span>
-                </label>
-            </div>  
-
-            
         </div>
         <div class="schedule-grid" id="schedule"></div>
    <div class="overlay" id="overlay">
@@ -1093,26 +953,17 @@ input:checked + .slider:before {
         </div>
     </div>
 </div>
-      
-      
-      
-      
+
+
+
+
         <!-- Mobile View -->
         <div class="mobile-view" style="display: none;">
             <div class="mobile-header">
                 <div class="mobile-nav">
-                    <button class="nav-button" onclick="mobilePreviousWeek()">←</button>
+                    <button class="nav-button" onclick="mobilePreviousWeek()"><</button>
                     <div class="mobile-current-date" id="mobileCurrent"></div>
-                    <button class="nav-button" onclick="mobileNextWeek()">→</button>
-                </div>
-                <div class="mobile-toggle-container">
-                    <div class="toggle-switch">
-                        <span id="mobileToggleText">Show Social</span>
-                        <label class="switch">
-                            <input type="checkbox" id="mobileDataToggle" onchange="toggleMobileDataVisibility()">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
+                    <button class="nav-button" onclick="mobileNextWeek()">></button>
                 </div>
                 <div class="mobile-dates" id="mobileDates"></div>
             </div>
@@ -1136,7 +987,7 @@ const BOOKING_URLS = {
     'Alpha Egerton': 'https://alphabadminton.yepbooking.com.au/',
     'Alpha Slough': 'https://alphabadminton.yepbooking.com.au/',
     'NBC Silverwater': 'https://nbc.yepbooking.com.au/',
-    'KBC Rydalmere': 'https://kbcnsw.yepbooking.com.au/',	
+    'KBC Rydalmere': 'https://kbcnsw.yepbooking.com.au/',
     'Roketto - Sydney Olympic Park': 'https://roketto.sportlogic.net.au/secure/customer/booking/v1/public/show',
     'BadmintonWorx Botany': 'https://badmintoncentre-botany.yepbooking.com.au/'
 };
@@ -1186,38 +1037,38 @@ async function initialize() {
     originalcourtData = courtData;
     if (courtData.length > 0) {
         console.log('Bookings loaded:', courtData);
-        
+
         // Filter out unavailable courts
         courtData = courtData.filter(court => court.Status !== "unavailable");
-        
+
         // Get all dates from Alpha courts for determining date range
         dates = courtData
             .filter(court => court.Location.startsWith("Alpha"))
             .map(court => new Date(court.Date));
-        
+
         minDate = new Date(Math.min(...dates));
         maxDate = new Date(Math.max(...dates));
-        
+
         // Filter courtData to only include dates up to maxDate
         courtData = courtData.filter(court => {
             const courtDate = new Date(court.Date);
             return courtDate <= maxDate;
         });
-        
+
         // Also filter originalcourtData
         originalcourtData = originalcourtData.filter(court => {
             const courtDate = new Date(court.Date);
             return courtDate <= maxDate;
         });
-        
+
         currentStartDate = getStartOfWeek(minDate);
-        
+
         console.log('Date range:', {
             minDate: minDate.toISOString(),
             maxDate: maxDate.toISOString(),
             filteredBookingsCount: courtData.length
         });
-        
+
         createSchedule();
         initializeMobileView();
         hideLoader();
@@ -1234,9 +1085,9 @@ function getStartOfWeek(date) {
 
 function formatDate(date) {
     const d = new Date(date);
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
+
 function getDateForDayIndex(startDate, dayIndex) {
     const date = new Date(startDate);
     date.setDate(date.getDate() + dayIndex);
@@ -1247,7 +1098,7 @@ function getDateForDayIndex(startDate, dayIndex) {
 function updateNavigationButtons() {
     const nextWeekStart = new Date(getStartOfWeek(currentStartDate));
     nextWeekStart.setDate(nextWeekStart.getDate() + 7);
-    
+
     const prevWeekStart = new Date(getStartOfWeek(currentStartDate));
     prevWeekStart.setDate(prevWeekStart.getDate() - 7);
 
@@ -1258,25 +1109,28 @@ function updateNavigationButtons() {
 function updateWeekDisplay() {
     const endDate = new Date(currentStartDate);
     endDate.setDate(endDate.getDate() + 6);
-    
+
     const weekDisplay = document.getElementById('current-week');
     weekDisplay.textContent = `${formatDate(currentStartDate)} - ${formatDate(endDate)}`;
     updateNavigationButtons();
 }
 
 function toggleCourtNumbers(element) {
-    // Check if the element is a session or court listing
-    const courtNumbers = element.querySelector('.court-numbers') || element.nextElementSibling;
-    if (!courtNumbers) return;
-    
-    // Toggle the expanded class
+    const courtNumbers = element.nextElementSibling;
+    const isExpanding = !courtNumbers.classList.contains('expanded');
     courtNumbers.classList.toggle('expanded');
-    
-    // Find and update the expand icon
+
     const expandIcon = element.querySelector('.expand-icon');
-    if (expandIcon) {
-        expandIcon.textContent = courtNumbers.classList.contains('expanded') ? '▼' : '▶';
-    }
+    expandIcon.textContent = isExpanding ? 'V' : '>';
+
+    // Check if all sections are now expanded or collapsed
+    const allCourtNumbers = document.querySelectorAll('.court-numbers');
+    const allExpanded = Array.from(allCourtNumbers).every(el => el.classList.contains('expanded'));
+
+    // Update global state and button text
+    isAllExpanded = allExpanded;
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+    expandCollapseButton.textContent = allExpanded ? 'Collapse All' : 'Expand All';
 }
 
 function getCourtInfo(date, time) {
@@ -1318,14 +1172,14 @@ function getCourtInfo(date, time) {
             const count = courtNumbers.length;
             const bookingUrl = getBookingUrl(location, date);
             return `<div class="court-location" onclick="toggleCourtNumbers(this)">
-                <span class="expand-icon">▶</span>${location} (${count})
+                <span class="expand-icon">></span>${location} (${count})
             </div>
             <div class="court-numbers">
-                <a href="${bookingUrl}" 
-                   class="court-list-link" 
-                   target="_blank" 
+                <a href="${bookingUrl}"
+                   class="court-list-link"
+                   target="_blank"
                    rel="noopener noreferrer">
-                    Courts: ${courtNumbers.map(court => 
+                    Courts: ${courtNumbers.map(court =>
                         `<span class="court-number">${court.number}</span>`
                     ).join(', ')}
                 </a>
@@ -1337,18 +1191,18 @@ function getCourtInfo(date, time) {
 function createSchedule() {
     const schedule = document.getElementById('schedule');
     schedule.innerHTML = '';
-    
+
     // Create empty top-left cell
     const emptyCell = document.createElement('div');
     emptyCell.className = 'time-header';
     emptyCell.textContent = '';
     schedule.appendChild(emptyCell);
-    
+
     // Create header row
     days.forEach((day, index) => {
         const currentDate = new Date(currentStartDate);
         currentDate.setDate(currentDate.getDate() + index);
-        
+
         const headerCell = document.createElement('div');
         headerCell.className = 'header-cell';
         headerCell.innerHTML = `
@@ -1372,9 +1226,9 @@ function createSchedule() {
             const checkDate = new Date(currentDate);
             const maxDateCheck = new Date(maxDate);
             maxDateCheck.setHours(23, 59, 59, 999);
-            
+
             const timeSlotDiv = document.createElement('div');
-            
+
             if (checkDate > maxDateCheck) {
                 // Date is beyond maxDate
                 timeSlotDiv.className = 'time-slot no-data';
@@ -1385,7 +1239,7 @@ function createSchedule() {
                 timeSlotDiv.className = `time-slot ${isUnavailable ? 'unavailable' : courtInfo !== '' ? 'available' : ''}`;
                 timeSlotDiv.innerHTML = `<div class="court-info">${courtInfo}</div>`;
             }
-            
+
             schedule.appendChild(timeSlotDiv);
         });
     });
@@ -1399,13 +1253,7 @@ function nextWeek() {
     nextWeek.setDate(nextWeek.getDate() + 7);
     if (nextWeek <= maxDate) {
         currentStartDate = nextWeek;
-        // Check if we're in social view or court view
-        const toggle = document.getElementById('dataToggle');
-        if (toggle && toggle.checked) {
-            displaySocialSchedule(socialData); // Show social data for new week
-        } else {
-            createSchedule(); // Show court data for new week
-        }
+        createSchedule();
         renderMobileDates();
         renderMobileSchedule();
     }
@@ -1416,13 +1264,7 @@ function previousWeek() {
     prevWeek.setDate(prevWeek.getDate() - 7);
     if (prevWeek >= getStartOfWeek(minDate)) {
         currentStartDate = prevWeek;
-        // Check if we're in social view or court view
-        const toggle = document.getElementById('dataToggle');
-        if (toggle && toggle.checked) {
-            displaySocialSchedule(socialData); // Show social data for new week
-        } else {
-            createSchedule(); // Show court data for new week
-        }
+        createSchedule();
         renderMobileDates();
         renderMobileSchedule();
     }
@@ -1431,26 +1273,26 @@ function previousWeek() {
 // Filter functions
 function applyFilter(selectedValue) {
     if (selectedValue === "") return; // Don't process empty selections
-    
+
     // Update both desktop and mobile dropdowns to show the same selection
     const desktopDropdown = document.getElementById("dropdown");
     const mobileFilterButton = document.querySelector('.mobile-filter-button');
-    
+
     if (selectedValue == "All Courts") {
         courtData = originalcourtData.filter(court => court.Status !== "unavailable");
         mobileFilterButton?.classList.remove('active');
     } else {
-        courtData = originalcourtData.filter(court => 
+        courtData = originalcourtData.filter(court =>
             court.Status !== "unavailable" && court.Location == selectedValue
         );
         mobileFilterButton?.classList.add('active');
     }
-    
+
     // Update the views
     if (desktopDropdown) desktopDropdown.value = selectedValue;
     dates = courtData.filter(court => court.Location.startsWith("Alpha"))
         .map(court => new Date(court.Date));
-    
+
     // Refresh both views
     createSchedule();
     renderMobileSchedule();
@@ -1462,16 +1304,7 @@ function initializeMobileView() {
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.schedule-grid');
     const navigation = document.querySelector('.navigation');
-    
-    // Sync toggle states
-    const desktopToggle = document.getElementById('dataToggle');
-    const mobileToggle = document.getElementById('mobileDataToggle');
-    
-    if (mobileToggle && desktopToggle) {
-        mobileToggle.checked = desktopToggle.checked;
-        document.getElementById('mobileToggleText').textContent = 
-            desktopToggle.checked ? "Show Courts" : "Show Social";
-    }
+    const filterBar = document.querySelector('.filter-bar');
 
     // Remove any open filter dropdown when switching views
     const existingFilter = document.getElementById('mobile-filter-dropdown');
@@ -1481,85 +1314,44 @@ function initializeMobileView() {
         mobileView.style.display = 'block';
         desktopView.style.display = 'none';
         navigation.style.display = 'none';
+        filterBar.style.display = 'none';
         renderMobileDates();
         renderMobileSchedule();
+        goToCurrentDate();
     } else {
         mobileView.style.display = 'none';
         desktopView.style.display = 'grid';
         navigation.style.display = 'flex';
-        
-        // Check if we're in social view
-        const toggle = document.getElementById('dataToggle');
-        if (toggle && toggle.checked) {
-            displaySocialSchedule(socialData);
-        } else {
-            createSchedule();
-        }
+        filterBar.style.display = 'flex';
+        createSchedule();
     }
 }
 
-function toggleDataVisibility() {
-    const desktopToggle = document.getElementById('dataToggle');
-    const mobileToggle = document.getElementById('mobileDataToggle');
-    const toggleText = document.getElementById('toggleText');
-    const mobileToggleText = document.getElementById('mobileToggleText');
-    
-    // Sync the toggles
-    if (mobileToggle) mobileToggle.checked = desktopToggle.checked;
-    
-    if (desktopToggle.checked) {
-        toggleText.textContent = "Show Courts";
-        if (mobileToggleText) mobileToggleText.textContent = "Show Courts";
-        if (socialData.length === 0) {
-            fetchSocialData().then(() => {
-                if (window.innerWidth <= 768) {
-                    renderMobileSchedule();
-                } else {
-                    displaySocialSchedule(socialData);
-                }
-            });
-        } else {
-            if (window.innerWidth <= 768) {
-                renderMobileSchedule();
-            } else {
-                displaySocialSchedule(socialData);
-            }
-        }
-    } else {
-        toggleText.textContent = "Show Social";
-        if (mobileToggleText) mobileToggleText.textContent = "Show Social";
-        if (window.innerWidth <= 768) {
-            renderMobileSchedule();
-        } else {
-            createSchedule();
-        }
-    }
-}
 function renderMobileDates() {
     const mobileDates = document.getElementById('mobileDates');
     const currentDate = new Date(currentStartDate);
-    
+
     // Update the week range in the header
     const endDate = new Date(currentDate);
     endDate.setDate(endDate.getDate() + 6);
-    document.getElementById('mobileCurrent').innerHTML = 
+    document.getElementById('mobileCurrent').innerHTML =
         `${formatDate(currentDate)} - ${formatDate(endDate)}`;
-    
+
     // Rest of the function remains the same
     mobileDates.innerHTML = '';
     for (let i = 0; i < 7; i++) {
         const date = new Date(currentDate);
         date.setDate(date.getDate() + i);
-        
+
         const tab = document.createElement('button');
         tab.className = `date-tab ${i === selectedDay ? 'active' : ''}`;
         tab.onclick = () => selectMobileDay(i);
-        
+
         tab.innerHTML = `
             <span class="day">${days[date.getDay()].slice(0, 3)}</span>
             <span class="date">${date.getDate()} ${months[date.getMonth()]}</span>
         `;
-        
+
         mobileDates.appendChild(tab);
     }
 }
@@ -1569,144 +1361,40 @@ function renderMobileSchedule() {
     const currentDate = new Date(currentStartDate);
     currentDate.setDate(currentDate.getDate() + selectedDay);
     const dateStr = currentDate.toISOString().split('T')[0];
-    const dayName = days[currentDate.getDay()];
-    
+
     mobileSchedule.innerHTML = '';
-    
-    // Check if we're in social view
-    const mobileToggle = document.getElementById('mobileDataToggle');
-    const isSocialView = mobileToggle && mobileToggle.checked;
-    
-    //console.log('Social View:', isSocialView); // Debug
-    //console.log('Social Data:', socialData); // Debug
-    
+
     timeSlots.forEach(time => {
+        const courts = getCourtInfoForMobile(dateStr, time);
         const timeSlot = document.createElement('div');
         timeSlot.className = 'mobile-timeslot';
-        
-        if (isSocialView && socialData && socialData.length > 0) {
-            // Handle social sessions
-            //console.log('Checking for sessions on', dayName, 'at', time); // Debug
-            
-            const sessions = socialData.filter(session => {
-                //console.log('Session:', session); // Debug
-                return session.Day === dayName && 
-                       normalizeTime(session['Start Time']) === normalizeTime(time);
-            });
-            
-            if (sessions.length > 0) {
-                console.log('Found sessions:', sessions); // Debug
-                timeSlot.classList.add('available');
-                timeSlot.innerHTML = `
-                    <div class="mobile-time">${time}</div>
-                    ${sessions.map(session => `
-                        <div class="mobile-court">
-                            <div class="mobile-court-header" onclick="toggleMobileCourtList(this)">
-                                <span class="court-arrow">▶</span>
-                                <span class="mobile-court-name">${session.Name} [${session.Location}]</span>
-                            </div>
-                            <div class="mobile-court-list">
-                                <div class="mobile-court-numbers">
-                                    <div class="mobile-court-info">
-                                        <div><strong>Time:</strong> ${session['Start Time']} - ${session['End Time']}</div>
-                                        <div><strong>Organiser:</strong> ${session.Organiser}</div>
-                                        ${session.Contact ? `<div><strong>Contact:</strong> ${session.Contact}</div>` : ''}
-                                        ${session['Link 1'] ? `
-                                            <a href="${session['Link 1']}" 
-                                               class="mobile-court-chip"
-                                               target="_blank" 
-                                               rel="noopener noreferrer">More Info</a>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                `;
-            } else {
-                timeSlot.classList.add('unavailable');
-                timeSlot.innerHTML = `
-                    <div class="mobile-time">${time}</div>
-                    <div class="mobile-court">
-                        <div class="mobile-court-unavailable">No sessions</div>
-                    </div>
-                `;
-            }
-        } else if (!isSocialView) {
-            // Existing court handling code
-            const courts = getCourtInfoForMobile(dateStr, time);
-            
-            if (courts[0]?.isNoData) {
-                timeSlot.classList.add('no-data');
-                timeSlot.innerHTML = `
-                    <div class="mobile-time">${time}</div>
-                    <div class="mobile-court">
-                        <div class="mobile-court-unavailable">No data available</div>
-                    </div>
-                `;
-            } else if (courts[0]?.isUnavailable) {
-                timeSlot.classList.add('unavailable');
-                timeSlot.innerHTML = `
-                    <div class="mobile-time">${time}</div>
-                    <div class="mobile-court">
-                        <div class="mobile-court-unavailable">No courts available</div>
-                    </div>
-                `;
-            } else {
-                timeSlot.classList.add('available');
-                timeSlot.innerHTML = `
-                    <div class="mobile-time">${time}</div>
-                    ${formatMobileCourtInfo(courts)}
-                `;
-            }
+
+        if (courts[0]?.isNoData) {
+            timeSlot.classList.add('no-data');
+            timeSlot.innerHTML = `
+                <div class="mobile-time">${time}</div>
+                <div class="mobile-court">
+                    <div class="mobile-court-unavailable">No data available</div>
+                </div>
+            `;
+        } else if (courts[0]?.isUnavailable) {
+            timeSlot.classList.add('unavailable');
+            timeSlot.innerHTML = `
+                <div class="mobile-time">${time}</div>
+                <div class="mobile-court">
+                    <div class="mobile-court-unavailable">No courts available</div>
+                </div>
+            `;
+        } else {
+            timeSlot.classList.add('available');
+            timeSlot.innerHTML = `
+                <div class="mobile-time">${time}</div>
+                ${formatMobileCourtInfo(courts, dateStr)}
+            `;
         }
-        
+
         mobileSchedule.appendChild(timeSlot);
     });
-}
-
-function formatMobileSocialInfo(sessions) {
-    return sessions.map(session => `
-        <div class="mobile-court">
-            <div class="mobile-court-header" onclick="toggleMobileCourtList(this)">
-                <span class="court-arrow">▶</span>
-                <span class="mobile-court-name">${session.Name} [${session.Location}]</span>
-            </div>
-            <div class="mobile-court-list">
-                <div class="mobile-court-numbers">
-                    <div class="mobile-court-info">
-                        <div><strong>Time:</strong> ${session['Start Time']} - ${session['End Time']}</div>
-                        <div><strong>Organiser:</strong> ${session.Organiser}</div>
-                        ${session.Contact ? `<div><strong>Contact:</strong> ${session.Contact}</div>` : ''}
-                        ${session['Link 1'] ? `
-                            <a href="${session['Link 1']}" 
-                               class="mobile-court-chip"
-                               target="_blank" 
-                               rel="noopener noreferrer">More Info</a>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function toggleMobileCourtList(element) {
-    const courtList = element.nextElementSibling;
-    const arrow = element.querySelector('.court-arrow');
-    
-    // Get current height
-    const isExpanded = courtList.style.maxHeight !== '0px' && courtList.style.maxHeight !== '';
-    
-    // Toggle the arrow
-    arrow.textContent = isExpanded ? '▶' : '▼';
-    
-    // Toggle the content
-    if (isExpanded) {
-        courtList.style.maxHeight = '0px';
-    } else {
-        courtList.style.maxHeight = courtList.scrollHeight + 'px';
-    }
 }
 
 function getCourtInfoForMobile(date, time) {
@@ -1758,16 +1446,16 @@ function formatMobileCourtInfo(courts, date) {
         return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
-                <span class="court-arrow">▶</span>
+                <span class="court-arrow">></span>
                 <span class="mobile-court-name">${locationData.location}</span>
                 <span class="mobile-court-count">(${locationData.count})</span>
             </div>
             <div class="mobile-court-list">
                 <div class="mobile-court-numbers">
                     ${locationData.courts.map(court => `
-                        <a href="${bookingUrl}" 
+                        <a href="${bookingUrl}"
                            class="mobile-court-chip"
-                           target="_blank" 
+                           target="_blank"
                            rel="noopener noreferrer">${court}</a>
                     `).join('')}
                 </div>
@@ -1789,9 +1477,9 @@ function updateMobileCurrentDate() {
     const startDate = new Date(currentStartDate);
     const endDate = new Date(currentStartDate);
     endDate.setDate(endDate.getDate() + 6);
-    
+
     // Keep the weekly range format
-    document.getElementById('mobileCurrent').textContent = 
+    document.getElementById('mobileCurrent').textContent =
         `${formatDate(startDate)} - ${formatDate(endDate)}`;
 }
 
@@ -1818,31 +1506,35 @@ window.addEventListener('resize', () => {
 
 // Expand/Collapse functions
 function expandCollapseAll() {
-    isAllExpanded = !isAllExpanded;
-    const expandButton = document.getElementById('expandCollapseButton');
+    isAllExpanded = !isAllExpanded; // Toggle the state
+
+    // Get all court numbers elements
     const allCourtNumbers = document.querySelectorAll('.court-numbers');
     const allExpandIcons = document.querySelectorAll('.expand-icon');
-    
-    allCourtNumbers.forEach(div => {
+    const expandCollapseButton = document.getElementById('expandCollapseButton');
+
+    allCourtNumbers.forEach(courtNumbers => {
         if (isAllExpanded) {
-            div.classList.add('expanded');
+            courtNumbers.classList.add('expanded');
         } else {
-            div.classList.remove('expanded');
+            courtNumbers.classList.remove('expanded');
         }
     });
-    
+
+    // Update all expand icons
     allExpandIcons.forEach(icon => {
-        icon.textContent = isAllExpanded ? '▼' : '▶';
+        icon.textContent = isAllExpanded ? 'V' : '>';
     });
-    
-    expandButton.textContent = isAllExpanded ? 'Collapse All' : 'Expand All';
+
+    // Update button text
+    expandCollapseButton.textContent = isAllExpanded ? 'Collapse All' : 'Expand All';
 }
 
           // Function to toggle the overlay (expand and contract)
     function toggleOverlay() {
       const overlay = document.getElementById('overlay');
       const overlayContent = document.querySelector('.overlay-content');
-      
+
       // If overlay is not visible, show it with expand effect
       if (overlay.style.display === 'none' || overlay.style.display === '') {
         overlay.style.display = 'flex';
@@ -1861,19 +1553,19 @@ function expandCollapseAll() {
         }, 300);  // Time to match the transition duration
       }
     }
-     
-      
+
+
 function toggleCourtList(element) {
     const courtList = element.nextElementSibling;
     const arrow = element.querySelector('.court-arrow');
-    
+
     // Toggle the visibility
     if (courtList.style.maxHeight) {
         courtList.style.maxHeight = null;
-        arrow.textContent = '▶';
+        arrow.textContent = '>';
     } else {
         courtList.style.maxHeight = courtList.scrollHeight + "px";
-        arrow.textContent = '▼';
+        arrow.textContent = 'V';
     }
 }
 
@@ -1886,7 +1578,7 @@ function mobilePreviousWeek() {
         // Update the header with the weekly range
         const endDate = new Date(prevWeek);
         endDate.setDate(endDate.getDate() + 6);
-        document.getElementById('mobileCurrent').textContent = 
+        document.getElementById('mobileCurrent').textContent =
             `${formatDate(prevWeek)} - ${formatDate(endDate)}`;
         renderMobileSchedule();
     }
@@ -1901,7 +1593,7 @@ function mobileNextWeek() {
         // Update the header with the weekly range
         const endDate = new Date(nextWeek);
         endDate.setDate(endDate.getDate() + 6);
-        document.getElementById('mobileCurrent').textContent = 
+        document.getElementById('mobileCurrent').textContent =
             `${formatDate(nextWeek)} - ${formatDate(endDate)}`;
         renderMobileSchedule();
     }
@@ -1917,14 +1609,14 @@ function toggleMobileFilter() {
     const filterContainer = document.createElement('div');
     filterContainer.id = 'mobile-filter-dropdown';
     filterContainer.className = 'mobile-filter-dropdown';
-    
+
     const select = document.createElement('select');
     select.className = 'mobile-dropdown';
     select.onchange = function() {
       if (this.value === "Find Courts"){
         toggleOverlay();
       } else {
-        applyFilter(this.value);        
+        applyFilter(this.value);
       }
         toggleMobileFilter(); // Close the filter after selection
     };
@@ -1936,11 +1628,11 @@ function toggleMobileFilter() {
         { value: 'Alpha Auburn', text: 'Alpha Auburn' },
         { value: 'Alpha Egerton', text: 'Alpha Egerton' },
         { value: 'Alpha Slough', text: 'Alpha Slough' },
-	{ value: 'BadmintonWorx Botany', text: 'BadmintonWorx - Botany' },     
+	{ value: 'BadmintonWorx Botany', text: 'BadmintonWorx - Botany' },
 	{ value: 'KBC Rydalmere', text: 'KBC Rydalmere' },
-	{ value: 'NBC Silverwater', text: 'NBC Silverwater' },    
+	{ value: 'NBC Silverwater', text: 'NBC Silverwater' },
         { value: 'Roketto - Sydney Olympic Park', text: 'Roketto' },
-        { value: 'Find Courts', text: '► Find Courts ◄' }
+        { value: 'Find Courts', text: '? Find Courts ?' }
 
     ];
 
@@ -1975,11 +1667,11 @@ function applyOverlayFilters() {
 
     // Create array of consecutive hours needed
     const timeRange = Array.from({length: hours}, (_, i) => startTime + i);
-    
+
     // First, group courts by location and time
     const courtsByLocationAndTime = courtData.reduce((acc, court) => {
         let courtTime = parseInt(court.Time.split(':')[0]);
-        
+
         // Convert to 24-hour format
         if (court.Time.toLowerCase().includes('pm') && courtTime !== 12) {
             courtTime += 12;
@@ -1987,7 +1679,7 @@ function applyOverlayFilters() {
         if (court.Time.toLowerCase().includes('am') && courtTime === 12) {
             courtTime = 0;
         }
-        
+
         if (court.Date === date && timeRange.includes(courtTime)) {
             if (!acc[court.Location]) {
                 acc[court.Location] = {};
@@ -2002,7 +1694,7 @@ function applyOverlayFilters() {
 
     // Find courts that are available for all requested hours
     const availableLocations = [];
-    
+
     for (const [location, timeSlots] of Object.entries(courtsByLocationAndTime)) {
         // Get courts that are available for all hours in the range
         const availableCourts = new Set();
@@ -2010,7 +1702,7 @@ function applyOverlayFilters() {
 
         for (const hour of timeRange) {
             const courtsAtTime = timeSlots[hour] || new Set();
-            
+
             if (firstTimeSlot) {
                 // Initialize with courts from first time slot
                 courtsAtTime.forEach(court => availableCourts.add(court));
@@ -2040,7 +1732,7 @@ function applyOverlayFilters() {
 
 function displayResults(results, date, startTime, hours, requiredCourts) {
     const overlayContent = document.querySelector('.overlay-content');
-    
+
     // Create a new div for results
     const resultsDiv = document.createElement('div');
     resultsDiv.style.marginTop = '20px';
@@ -2066,7 +1758,7 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
 
     if (results.length === 0) {
         resultsDiv.innerHTML = `
-            <p style="color: #666;">No locations found with ${requiredCourts} court(s) available for ${hours} consecutive hour(s) 
+            <p style="color: #666;">No locations found with ${requiredCourts} court(s) available for ${hours} consecutive hour(s)
             starting from ${startTimeFormatted} on ${date}</p>
         `;
     } else {
@@ -2084,9 +1776,9 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
                 <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid #0366d6; background: #fff;">
                     <strong style="color: #0366d6;">${location}</strong><br>
                     <span style="color: #666;">Available courts: ${courts.join(', ')}</span><br>
-                    <a href="${bookingUrl}" target="_blank" rel="noopener noreferrer" 
+                    <a href="${bookingUrl}" target="_blank" rel="noopener noreferrer"
                        style="color: #0366d6; text-decoration: none; display: inline-block; margin-top: 8px;">
-                        Book Now →
+                        Book Now ?
                     </a>
                 </div>
             `;
@@ -2102,78 +1794,74 @@ function displayResults(results, date, startTime, hours, requiredCourts) {
 //Go to current date and time for mobile view
 
 function goToCurrentDate() {
+    // Get current date
     const today = new Date();
-    // Move to the closest available date, not before minDate and not after maxDate
-    let targetDate = new Date(today);
-    
-    // If today is before minDate, use minDate
-    if (today < minDate) {
-        targetDate = new Date(minDate);
-    }
-    // If today is after maxDate, use maxDate
-    else if (today > maxDate) {
-        targetDate = new Date(maxDate);
-    }
-    
-    // Set to start of week containing target date
-    currentStartDate = getStartOfWeek(targetDate);
-    
-    // For mobile view, calculate the day offset
-    const daysDiff = Math.floor((today - currentStartDate) / (1000 * 60 * 60 * 24));
-    selectedDay = Math.max(0, Math.min(6, daysDiff));
-    
-    // Update both desktop and mobile views
-    if (window.innerWidth <= 768) {
-        renderMobileDates();
-        renderMobileSchedule();
-        
-        // Scroll to the current date tab
-        const mobileDate = document.getElementById('mobileDates');
-        if (mobileDate) {
-            const dateElements = mobileDate.getElementsByClassName('date-tab');
-            if (dateElements[selectedDay]) {
-                dateElements[selectedDay].scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest',
-                    inline: 'center' 
-                });
+    const currentDay = today.getDate();
+    const currentMonth = today.toLocaleString('default', { month: 'short' });
+
+    // Find all date-tab buttons
+    const dateTabs = document.querySelectorAll('.date-tab');
+
+    // Loop through tabs to find matching date
+    dateTabs.forEach(tab => {
+        const dateSpan = tab.querySelector('.date');
+        if (dateSpan) {
+            const tabDate = dateSpan.textContent; // e.g., "7 Jan"
+            const [day, month] = tabDate.split(' ');
+
+            // Check if this tab matches current date
+            if (parseInt(day) === currentDay && month === currentMonth) {
+                // Simulate click on the matching tab
+                tab.click();
             }
         }
-    } else {
-        // Check if we're in social view or court view
-        const toggle = document.getElementById('dataToggle');
-        if (toggle && toggle.checked) {
-            displaySocialSchedule(socialData);
-        } else {
-            createSchedule();
-        }
+    });
+
+    // Function to round up to nearest hour
+    function roundToNextHour(date) {
+        const roundedDate = new Date(date);
+        roundedDate.setHours(date.getHours() + 1);
+        roundedDate.setMinutes(0);
+        roundedDate.setSeconds(0);
+        roundedDate.setMilliseconds(0);
+        return roundedDate;
     }
-    
-    // Update navigation buttons state
-    updateNavigationButtons();
-    updateWeekDisplay();
-    
-    // Update mobile current date display
-    const mobileCurrent = document.getElementById('mobileCurrent');
-    if (mobileCurrent) {
-        const endDate = new Date(currentStartDate);
-        endDate.setDate(endDate.getDate() + 6);
-        mobileCurrent.textContent = `${formatDate(currentStartDate)} - ${formatDate(endDate)}`;
+
+    // Get current time and round up to next hour
+    const now = new Date();
+    const roundedTime = roundToNextHour(now);
+
+    // Format the time string to match the HTML format
+    // Convert 24h to 12h format with am/pm
+    function formatTimeString(date) {
+        let hours = date.getHours();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // handle midnight (0)
+        return `${hours}:00${ampm}`;
+    }
+
+    const targetTimeString = formatTimeString(roundedTime);
+
+    // Find the timeslot element
+    const timesList = document.querySelectorAll('.mobile-timeslot');
+    let targetSlot = null;
+
+    timesList.forEach(slot => {
+        const timeElement = slot.querySelector('.mobile-time');
+        if (timeElement && timeElement.textContent === targetTimeString) {
+            targetSlot = slot;
+        }
+    });
+
+    // If we found the target time slot, scroll to it
+    if (targetSlot) {
+        // Add a small delay to ensure other initializations are complete
+        setTimeout(() => {
+            targetSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
     }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Add click handler for any "Today" or "Current" buttons
-    const currentDateButton = document.querySelector('.nav-button[onclick="goToCurrentDate()"]');
-    if (currentDateButton) {
-        currentDateButton.addEventListener('click', goToCurrentDate);
-    }
-    
-    // Initialize the view to current date if it's the first load
-    if (!currentStartDate) {
-        goToCurrentDate();
-    }
-});
 
 function hideLoader() {
   document.getElementById('loadingOverlay').classList.add('hidden');
@@ -2183,214 +1871,6 @@ function hideLoader() {
 // To show the loader
 function showLoader() {
   document.getElementById('loadingOverlay').classList.remove('hidden');
-}
-
-async function fetchSocialData() {
-    try {
-        const response = await fetch('https://storage.googleapis.com/badminton-bookings/Social%20Sessions.csv');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
-        socialData = parseCSV(text);
-        return socialData;
-    } catch (error) {
-        console.error('Error loading social data:', error);
-        socialData = []; // Initialize as empty array if fetch fails
-        return [];
-    }
-}
-
-
-let socialData = [];
-
-// Fetch social session data
-async function toggleDataVisibility() {
-    const toggle = document.getElementById('dataToggle');
-    const toggleText = document.getElementById('toggleText');
-    
-    if (toggle.checked) {
-        // Switch to social view
-        toggleText.textContent = "Show Courts";
-        if (socialData.length === 0) {
-            try {
-                const response = await fetch('https://storage.googleapis.com/badminton-bookings/Social%20Sessions.csv');
-                const text = await response.text();
-                socialData = parseCSV(text);
-            } catch (error) {
-                console.error('Error loading social data:', error);
-                return;
-            }
-        }
-        displaySocialSchedule(socialData);
-    } else {
-        // Switch back to courts view
-        toggleText.textContent = "Show Social";
-        createSchedule();
-    }
-}
-
-
-function parseCSV(csv) {
-    const lines = csv.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
-    const data = [];
-    
-    for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue; // Skip empty lines
-        
-        const values = lines[i].split(',');
-        const entry = {};
-        
-        headers.forEach((header, index) => {
-            entry[header] = values[index] ? values[index].trim() : '';
-        });
-        
-        data.push(entry);
-    }
-    
-    return data;
-}
-
-function normalizeTime(timeStr) {
-    if (!timeStr) return '';
-    
-    // Convert to lowercase and remove extra spaces
-    timeStr = timeStr.toLowerCase().trim();
-    
-    // Handle different time formats
-    let hour = 0;
-    let minutes = '00';
-    let period = 'am';
-    
-    // Extract numbers and period
-    const match = timeStr.match(/(\d+)(?::(\d+))?\s*(am|pm)?/i);
-    if (match) {
-        hour = parseInt(match[1]);
-        minutes = match[2] || '00';
-        period = (match[3] || 'am').toLowerCase();
-        
-        // Convert to 12-hour format
-        if (period === 'pm' && hour < 12) hour += 12;
-        if (period === 'am' && hour === 12) hour = 0;
-        
-        // Format back to standard format
-        return `${hour}:${minutes}${period}`;
-    }
-    
-    return timeStr; // Return original if parsing fails
-}
-
-// Display social sessions in schedule grid
-function displaySocialSchedule(data) {
-    const schedule = document.getElementById('schedule');
-    schedule.innerHTML = '';
-    
-    // Create empty top-left cell
-    const emptyCell = document.createElement('div');
-    emptyCell.className = 'time-header';
-    emptyCell.textContent = '';
-    schedule.appendChild(emptyCell);
-    
-    // Create header row with days
-    days.forEach((day, index) => {
-        const currentDate = new Date(currentStartDate);
-        currentDate.setDate(currentDate.getDate() + index);
-        
-        const headerCell = document.createElement('div');
-        headerCell.className = 'header-cell';
-        headerCell.innerHTML = `
-            ${days[currentDate.getDay()]}
-            <div class="date-subheader">${formatDate(currentDate)}</div>
-        `;
-        schedule.appendChild(headerCell);
-    });
-    
-    // Create time slots
-    timeSlots.forEach(time => {
-        // Add time column
-        const timeCell = document.createElement('div');
-        timeCell.className = 'time-column';
-        timeCell.textContent = time;
-        schedule.appendChild(timeCell);
-        
-        // Add sessions for each day
-        days.forEach((day, index) => {
-            const currentDate = new Date(currentStartDate);
-            currentDate.setDate(currentDate.getDate() + index);
-            const dayName = days[currentDate.getDay()];
-            
-            const timeSlotDiv = document.createElement('div');
-            timeSlotDiv.className = 'time-slot';
-            
-            // Find sessions for this day and exact time
-            const sessions = data.filter(session => 
-                session.Day === dayName && 
-                normalizeTime(session['Start Time']) === normalizeTime(time)
-            );
-            
-            if (sessions.length > 0) {
-                timeSlotDiv.classList.add('available');
-                const sessionsHTML = sessions.map(session => `
-                    <div class="court-location" onclick="toggleCourtNumbers(this)">
-                        <span class="expand-icon">▶</span>
-                        ${session.Name} (${session.Location})
-                        <div class="court-numbers">
-                            <div class="court-info">
-                                <strong>Location:</strong> ${session.Location}<br>
-                                <strong>Time:</strong> ${session['Start Time']} - ${session['End Time']}<br>
-                                <strong>Organiser:</strong> ${session.Organiser}<br>
-                                ${session.Contact ? `<strong>Contact:</strong> ${session.Contact}<br>` : ''}
-                                ${session['Link 1'] ? `
-                                    <a href="${session['Link 1']}" 
-                                       class="court-list-link" 
-                                       target="_blank" 
-                                       rel="noopener noreferrer">
-                                        More Info
-                                    </a>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                timeSlotDiv.innerHTML = sessionsHTML;
-            } else {
-                timeSlotDiv.classList.add('unavailable');
-                timeSlotDiv.innerHTML = '<div class="court-info">No sessions</div>';
-            }
-            
-            schedule.appendChild(timeSlotDiv);
-        });
-    });
-    
-    updateWeekDisplay();
-}
-
-function toggleMobileDataVisibility() {
-    const toggle = document.getElementById('mobileDataToggle');
-    const toggleText = document.getElementById('mobileToggleText');
-    
-    if (toggle.checked) {
-        toggleText.textContent = "Show Courts";
-        if (!socialData || socialData.length === 0) {
-            // Show loading state if needed
-            fetchSocialData()
-                .then(() => {
-                    renderMobileSchedule();
-                })
-                .catch(error => {
-                    console.error('Failed to load social data:', error);
-                    // Handle error state - maybe show an error message to user
-                    toggle.checked = false;
-                    toggleText.textContent = "Show Social";
-                });
-        } else {
-            renderMobileSchedule();
-        }
-    } else {
-        toggleText.textContent = "Show Social";
-        renderMobileSchedule();
-    }
 }
 
     </script>
@@ -2408,7 +1888,7 @@ function toggleMobileDataVisibility() {
         "addressCountry": "Australia"
       }
     }
-    
+
     </script>
 
 
@@ -2416,6 +1896,6 @@ function toggleMobileDataVisibility() {
     <footer>
         <p>&copy; 2025 Sydney Badminton Court Finder. All rights reserved.</p>
     </footer>
-    
+
 </body>
 </html>
