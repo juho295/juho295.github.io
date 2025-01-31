@@ -232,7 +232,7 @@ input[type="date"].filter-input {
             text-decoration: none;
         }
         .court-list-link::after {
-            content: "->";
+            content: "Book Court";
             font-size: 0.8em;
             margin-left: 4px;
             display: inline-block;
@@ -1501,6 +1501,12 @@ window.addEventListener('resize', () => {
     if (window.innerWidth !== previousWidth) {
         previousWidth = window.innerWidth;
         initializeMobileView();
+    }
+});
+
+window.addEventListener("orientationchange", function () {
+    if (window.orientation !== 0) { // 0 is portrait, 90 or -90 is landscape
+        alert("Please rotate your device to portrait mode for the best experience.");
     }
 });
 
