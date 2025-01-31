@@ -1121,7 +1121,7 @@ function toggleCourtNumbers(element) {
     courtNumbers.classList.toggle('expanded');
 
     const expandIcon = element.querySelector('.expand-icon');
-    expandIcon.textContent = isExpanding ? '?' : '?';
+    expandIcon.textContent = isExpanding ? 'V' : '>';
 
     // Check if all sections are now expanded or collapsed
     const allCourtNumbers = document.querySelectorAll('.court-numbers');
@@ -1446,7 +1446,7 @@ function formatMobileCourtInfo(courts, date) {
         return `
         <div class="mobile-court">
             <div class="mobile-court-header" onclick="toggleCourtList(this)">
-                <span class="court-arrow">V</span>
+                <span class="court-arrow">></span>
                 <span class="mobile-court-name">${locationData.location}</span>
                 <span class="mobile-court-count">(${locationData.count})</span>
             </div>
@@ -1523,7 +1523,7 @@ function expandCollapseAll() {
 
     // Update all expand icons
     allExpandIcons.forEach(icon => {
-        icon.textContent = isAllExpanded ? '?' : '?';
+        icon.textContent = isAllExpanded ? 'V' : '>';
     });
 
     // Update button text
@@ -1562,10 +1562,10 @@ function toggleCourtList(element) {
     // Toggle the visibility
     if (courtList.style.maxHeight) {
         courtList.style.maxHeight = null;
-        arrow.textContent = '?';
+        arrow.textContent = '>';
     } else {
         courtList.style.maxHeight = courtList.scrollHeight + "px";
-        arrow.textContent = '?';
+        arrow.textContent = 'V';
     }
 }
 
