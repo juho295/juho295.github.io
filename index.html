@@ -425,6 +425,7 @@ input[type="date"].filter-input {
                 z-index: 100;
                 border-bottom: 1px solid #eee;
                 width: 100%;
+		max-width:480px;
                 overflow: hidden; /* Contains the scrolling dates */
             }
 
@@ -466,7 +467,7 @@ input[type="date"].filter-input {
             #mobileSchedule {
                 padding-top: 128px;
                 min-width:400px;
-                max-width:600px;
+                max-width:480px;
             }
 
             .date-tab {
@@ -1091,7 +1092,7 @@ input:checked + .slider:before {
             <div class="filter-button-container"><button class="nav-button" id="findCourts" onclick="toggleOverlay()"><span><img class="filter-icon" alt="Advanced Search" src="https://juho295.github.io/assets/images/search-icon.svg"></span>Advanced Search</button></div>
 
             <div class="tooltip-container">
-                <div id="tooltip-text" class="tooltip">Click here for social sessions!</div>
+                <div id="tooltip-text" class="tooltip">Click here for Social Sessions!</div>
             </div>
             <div class="toggle-switch">
                 <span id="toggleText">Show Social</span>
@@ -1156,9 +1157,9 @@ input:checked + .slider:before {
         <div class="mobile-view" style="display: none;">
             <div class="mobile-header">
                 <div class="mobile-nav">
-                    <button class="nav-button" onclick="mobilePreviousWeek()">â†</button>
+                    <button class="nav-button" onclick="mobilePreviousWeek()">◀ </button>
                     <div class="mobile-current-date" id="mobileCurrent"></div>
-                    <button class="nav-button" onclick="mobileNextWeek()">â†’</button>
+                    <button class="nav-button" onclick="mobileNextWeek()">▶</button>
                 </div>
                 <div class="mobile-toggle-container">
                     <div class="toggle-switch">
@@ -1373,7 +1374,7 @@ function getCourtInfo(date, time) {
             const count = courtNumbers.length;
             const bookingUrl = getBookingUrl(location, date);
             return `<div class="court-location" onclick="toggleCourtNumbers(this)">
-                <span class="expand-icon">â–¶</span>${location} (${count})
+                <span class="expand-icon">▶</span>${location} (${count})
             </div>
             <div class="court-numbers">
                 <a href="${bookingUrl}"
@@ -2398,7 +2399,7 @@ function displaySocialSchedule(data) {
                 timeSlotDiv.classList.add('available');
                 const sessionsHTML = sessions.map(session => `
                     <div class="court-location" onclick="toggleCourtNumbers(this)">
-                        <span class="expand-icon">â–¶</span>
+                        <span class="expand-icon">▶</span>
                         ${session.Name} (${session.Location})
                         <div class="court-numbers">
                             <div class="court-info">
