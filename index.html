@@ -395,7 +395,7 @@ footer {
 .filter-button-container {
     display: flex;
     align-items: center;
-    width: 20%;
+    width: 18%;
 }
 .filter-button-container .nav-button, .dropdown {
     width: 100%;
@@ -602,8 +602,8 @@ input:checked + .slider:before {
     }
     
     .mobile-view {
-        width: 105%;
-        min-width:500px;
+        width: 100%;
+        /* min-width:500px; */
         overflow-x: hidden; /* Prevent horizontal scrolling of the entire view */
     }
     
@@ -653,7 +653,7 @@ input:checked + .slider:before {
     }
     
     #mobileSchedule {
-        padding-top: 128px;
+        padding-top: 96px;
     }
 
     .date-tab {
@@ -972,7 +972,7 @@ input:checked + .slider:before {
 
 /* Adjust the mobile schedule padding to account for the new toggle */
     #mobileSchedule {
-        padding-top: 160px; /* Increase this value to account for the toggle */
+        padding-top: 168px; /* Increase this value to account for the toggle */
     }
 			
 
@@ -1496,6 +1496,7 @@ function initializeMobileView() {
     const mobileView = document.querySelector('.mobile-view');
     const desktopView = document.querySelector('.schedule-grid');
     const navigation = document.querySelector('.navigation');
+    const filterBar = document.querySelector('.filter-bar');
     
     // Sync toggle states
     const desktopToggle = document.getElementById('dataToggle');
@@ -1515,12 +1516,14 @@ function initializeMobileView() {
         mobileView.style.display = 'block';
         desktopView.style.display = 'none';
         navigation.style.display = 'none';
+        filterBar.style.display = 'none';
         renderMobileDates();
         renderMobileSchedule();
     } else {
         mobileView.style.display = 'none';
         desktopView.style.display = 'grid';
         navigation.style.display = 'flex';
+        filterBar.style.display = 'flex';
         
         // Check if we're in social view
         const toggle = document.getElementById('dataToggle');
