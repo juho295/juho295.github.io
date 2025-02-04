@@ -2427,27 +2427,6 @@ function toggleMobileDataVisibility() {
     }
 }
 
-function enableZoom() {
-    let viewport = document.querySelector("meta[name=viewport]");
-    if (viewport) {
-        viewport.setAttribute("content", "width=device-width, initial-scale=1.0");
-    }
-}
-
-function lockViewport() {
-        let viewport = document.querySelector("meta[name=viewport]");
-        if (!viewport) {
-            viewport = document.createElement("meta");
-            viewport.name = "viewport";
-            document.head.appendChild(viewport);
-        }
-        viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-        // Enable zooming after 5 second
-        setTimeout(enableZoom, 5000);
-    }
-
-// Run on page load
-lockViewport();
 
 </script>
 
