@@ -21,13 +21,6 @@
     <title>Find Available Badminton Courts in Sydney - Badminton Court Finder</title>
     <style>
 
-body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
-}
 	    
 .overlay {
     display: none;
@@ -196,616 +189,184 @@ input[type="date"].filter-input {
     background-color: #0056b3;
 }
 
-
-
-        .time-slot.no-data {
-            border-left: 5px solid #888;
-            background-color: rgba(136, 136, 136, 0.03);
-        }
-        .court-info.no-data {
-            color: #888;
-            font-style: italic;
-            display: flex;
-        }
-        .schedule-container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: 80px repeat(7, 1fr);
-            gap: 6px;
-            min-width: 880px;
-            overflow-x: auto;
-            background-color: white;
-        }
-        .header-cell {
-            padding: 15px 10px;
-            text-align: center;
-            font-weight: bold;
-            background-color: #faf9fc;
-			font-size: 14px;
-        }
-        .court-list-link {
-            color: #002c5a;
-            text-decoration: none;
-            display: block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-			font-size: 12px;
-        }
-        .court-list-link:hover {
-            background-color: #0366d6;
-            color: white;
-            text-decoration: none;
-        }
-        .court-list-link::after {
-            content: "🡆";
-            font-size: 0.8em;
-            margin-left: 4px;
-            display: inline-block;
-        }
-        .time-header {
-            padding: 15px 10px;
-            text-align: center;
-            background-color: white;
-        }
-        .date-subheader {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-        }
-        .time-slot {
-            position: relative;
-            padding: 15px 10px;
-            background-color: white;
-            min-height: 80px;
-            border: 1px solid #000000;
-        }
-        .time-column {
-            padding: 15px 10px;
-            background-color: white;
-            display: flex;
-            align-items: flex-start;
-            font-size: 12px;
-        }
-        .court-info {
-            font-size: 12px;
-            line-height: 1.5;
-        }
-        .unavailable {
-            border-left: 5px solid rgb(255,59,48,0.5);
-        }
-        .available {
-            border-left: 5px solid rgb(52,199,89,0.5);
-        }
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        .nav-button {
-            padding: 8px 16px;
-            background-color: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #24292f;
-            transition: background-color 0.2s ease;
-            white-space: nowrap;
-        }
-        .nav-button:hover:not(:disabled) {
-            background-color: #f3f4f6;
-        }
-        .nav-button:active:not(:disabled) {
-            background-color: #ebecf0;
-        }
-        .nav-button:disabled {
-            background-color: #f6f8fa;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .dropdown {
-            padding: 8px 16px;
-            background-color: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #24292f;
-            min-width: 200px;
-        }
-        .dropdown:hover {
-            background-color: #f3f4f6;
-        }
-        .nav-button:disabled {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .nav-button:not(:disabled):hover {
-            background-color: #e9ecef;
-        }
-        .current-week {
-            font-size: 16px;
-            font-weight: 600;
-            color: #24292f;
-            padding: 0 16px;
-            white-space: nowrap;
-        }
-        .court-location {
-            margin-bottom: 8px;
-            line-height: 1.4;
-			font-size: 12px;
-        }
-        .court-number {
-            display: inline-block;
-            padding: 0 2px;
-        }
-        .court-numbers {
-            display: none;
-            margin-left: 10px;
-            color: #666;
-            font-size: 10px;
-            line-height: 1.4;
-        }
-        .court-numbers.expanded {
-            display: block;
-        }
-        .expand-icon {
-            display: inline-block;
-            width: 12px;
-            margin-right: 4px;
-            font-size: 10px;
-        }
-
-        /* Mobile styles */
-        @media (max-width: 768px) {
-            .mobile-timeslot.no-data {
-                border-left: 5px solid #888;
-                background-color: rgba(136, 136, 136, 0.03);
-            }
-
-            .mobile-court-unavailable.no-data {
-                color: #888;
-                font-style: italic;
-            }
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            
-            .schedule-container {
-                padding: 0;
-            }
-            
-            .schedule-grid,
-            .navigation {
-                display: none; /* Hide desktop elements */
-            }
-            
-            .mobile-view {
-                width: 100%;
-                overflow-x: hidden; /* Prevent horizontal scrolling of the entire view */
-            }
-            
-            .mobile-header {
-                position: fixed;
-                top: 0;
-                background: white;
-                z-index: 100;
-                border-bottom: 1px solid #eee;
-                width: 100%;
-                overflow: hidden; /* Contains the scrolling dates */
-            }
-            
-            .mobile-nav {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px;
-                border-bottom: 1px solid #eee;
-                width: 100%;
-                box-sizing: border-box; /* Include padding in width calculation */
-            }
-            
-            .mobile-current-date {
-                text-align: center;
-                font-size: 14px;
-                font-weight: 500;
-                flex-grow: 1;
-                padding: 0 10px;
-            }
-            
-            .mobile-dates {
-                display: flex;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                gap: 8px;
-                padding: 10px;
-                /* Add these properties to ensure proper width and scrolling */
-                width: 100%;
-                min-width: 0;
-                margin: 0;
-            }
-            
-            .mobile-dates::-webkit-scrollbar {
-                display: none;
-            }
-            
-            #mobileSchedule {
-                padding-top: 128px;
-            }
-
-            .date-tab {
-                padding: 8px 12px;
-                border: none;
-                background: none;
-                border-radius: 4px;
-                font-size: 14px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 4px;
-                min-width: 60px;
-                flex: 0 0 auto; /* This prevents the tabs from shrinking */
-                cursor: pointer;
-                white-space: nowrap; /* Prevents text wrapping */
-            }
-            
-            .date-tab.active {
-                background-color: #f0f0f0;
-                font-weight: 500;
-            }
-            
-            .date-tab .day {
-                font-weight: 500;
-            }
-            .date-tab .date {
-                font-size: 12px;
-                color: #666;
-            }
-            .date-tab.active {
-                border-bottom: 2px solid #000;
-            }
-            
-            .mobile-timeslot {
-                padding: 12px 16px; /* Increase horizontal padding */
-                margin-bottom: 1px; /* Add slight separation between time slots */
-            }
-            
-            .mobile-time {
-                font-weight: 500;
-                margin-bottom: 12px;
-            }
-            
-            .mobile-court {
-                width: 100%; /* Ensure full width */
-            }
-            
-            .mobile-court-name {
-                flex-grow: 1;
-                font-weight: 500;
-                font-size: 14px; /* Slightly larger font */
-                padding-right: 12px; /* Add some space before the count */
-                white-space: normal; /* Allow text to wrap if needed */
-                line-height: 1.4; /* Better line height for readability */
-            }
-            
-            .mobile-court-count {
-                color: #666;
-                font-size: 13px;
-                white-space: nowrap; /* Keep the count on one line */
-                padding-left: 8px; /* Space from the name */
-            }
-            
-            .mobile-court-numbers {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                padding: 10px 0;
-                margin-left: 24px; /* Align with the location name */
-                width: calc(100% - 24px); /* Full width minus the left margin */
-            }
-            .mobile-court-chip {
-                background-color: #f0f0f0;
-                padding: 4px 8px;
-                border-radius: 12px;
-                font-size: 13px;
-                color: #0366d6;
-                display: inline-block;
-                text-decoration: none;
-                transition: all 0.2s ease;
-                margin: 2px;
-            }
-            .mobile-court-chip:hover {
-                background-color: #0366d6;
-                color: white;
-                transform: translateY(-1px);
-            }
-            .mobile-court-chip:active {
-                transform: translateY(0);
-            }
-            .court-link::after,
-            .mobile-court-chip::after {
-                font-size: 0.8em;
-                margin-left: 2px;
-                display: inline-block;
-            }
-            .mobile-filter-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            }
-			.mobile-filter-button:active {
-                transform: translateY(0);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            }
-            .mobile-filter-button.active {
-                background-color: #f0f0f0;
-                border-color: #0366d6;
-            }
-            .mobile-filter-button.active svg {
-            color: #0366d6;
-            }
-            .mobile-filter-button {
-                position: fixed;
-                bottom: 24px; /* Distance from bottom */
-                right: 24px; /* Distance from right */
-                background: white;
-                border: 1px solid #ddd;
-                border-radius: 50%;
-                width: 48px; /* Slightly larger for better touch target */
-                height: 48px; /* Slightly larger for better touch target */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Enhanced shadow for floating effect */
-                z-index: 1000;
-                cursor: pointer;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-            
-            .mobile-filter-dropdown {
-                position: fixed;
-                bottom: 84px; /* Position above the filter button */
-                left: 16px;
-                right: 16px;
-                background: white;
-                padding: 16px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 999;
-            }
-			.mobile-dropdown {
-                width: 100%;
-                padding: 12px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 16px;
-                background-color: white;
-                appearance: none;
-                -webkit-appearance: none;
-                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-                background-repeat: no-repeat;
-                background-position: right 12px center;
-                background-size: 16px;
-            }
-            .mobile-filter-button.active {
-                background-color: #f0f0f0;
-            }
-
-            .mobile-filter-button.active svg {
-                color: #0366d6;
-            }
-            .mobile-court-header {
-                display: flex;
-                align-items: center;
-                padding: 12px 0;
-                cursor: pointer;
-                width: 100%; /* Ensure full width */
-            }
-
-            .court-arrow {
-                margin-right: 12px; /* Increase space after arrow */
-                font-size: 12px;
-                transition: transform 0.3s ease;
-                flex-shrink: 0; /* Prevent arrow from shrinking */
-            }
-			.mobile-court-info {
-                padding: 12px;
-                font-size: 13px;
-                line-height: 1.5;
-                color: #666;
-            }
-
-            .mobile-court-info div {
-                margin-bottom: 8px;
-            }
-
-            .mobile-court-info strong {
-                color: #24292f;
-            }
-
-            .mobile-court-list {
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-out;
-            }
-
-            .mobile-court-item {
-                padding: 8px 0;
-                color: #666;
-                font-size: 14px;
-                border-bottom: 1px solid #eee;
-            }
-
-            .mobile-court-item:last-child {
-                border-bottom: none;
-            }
-            .mobile-timeslot {
-                position: relative;
-                border-left: 5px solid transparent;
-                transition: background-color 0.2s ease;
-            }
-
-            .mobile-timeslot.available {
-                border-left: 5px solid rgb(52,199,89,0.5); /* Green border for available */
-                background-color: rgba(52,199,89,0.03); /* Very light green background */
-            }
-
-            .mobile-timeslot.unavailable {
-                border-left: 5px solid rgb(255,59,48,0.5); /* Red border for unavailable */
-                background-color: rgba(255,59,48,0.03); /* Very light red background */
-            }
-
-            .mobile-time {
-                font-weight: 600;
-                color: #333;
-            }
-
-            .mobile-court-unavailable {
-                padding: 10px 0;
-                color: #666;
-                font-style: italic;
-            }
-
-            .mobile-timeslot.available:active {
-                background-color: rgba(52,199,89,0.1);
-            }
-            .overlay {
-                align-items: flex-start; /* Align to top on mobile */
-                padding: 0; /* Add padding around the overlay */
-				justify-content: flex-start; /* Align to the left */
-            }
-            .overlay-content {
-                margin: 16px;
-                padding: 16px;
-                max-height: calc(80vh - 32px);
-                transform: translateY(10%);
-                box-sizing: border-box; /* Include padding in width calculation */
-            }
-            .mobile-toggle-container {
-                display: flex;
-                justify-content: center;
-                padding: 8px 0;
-                background-color: white;
-                border-bottom: 1px solid #eee;
-            }
-            .toggle-switch {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 46px;
-                height: 24px;
-            }
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: .4s;
-                border-radius: 24px;
-            }
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 18px;
-                width: 18px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-
-            input:checked + .slider {
-                background-color: #2196F3;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(22px);
-            }
-
-            #mobileToggleText {
-                font-size: 14px;
-                color: #24292f;
-            }
-
-/* Adjust the mobile schedule padding to account for the new toggle */
-            #mobileSchedule {
-                padding-top: 160px; /* Increase this value to account for the toggle */
-            }
-			
-
-    .filter-group {
-        max-width: 75%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 14px;
-    }
-
-    .filter-input {
-        min-height: 30px; /* Minimum touch target size */
-        font-size: 14px; /* Prevent auto-zoom on iOS */
-    }
-
-    /* Specific styling for number inputs */
-    input[type="number"].filter-input {
-        -moz-appearance: textfield; /* Remove spinner arrows in Firefox */
-    }
-
-    input[type="number"].filter-input::-webkit-outer-spin-button,
-    input[type="number"].filter-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* Specific styling for date input */
-    input[type="date"].filter-input {
-        min-height: 44px;
-        padding-right: 10px; /* Add space for the calendar icon */
-    }
-
-    /* Specific styling for select */
-    select.filter-input {
-        padding-right: 30px; /* Space for the dropdown arrow */
-        background-repeat: no-repeat;
-        background-position: right 8px center;
-        background-size: 16px;
-    }
-
-    .button-group {
-        margin-top: 20px;
-        gap: 8px;
-    }
-
-    .filter-button {
-        min-height: 44px; /* Minimum touch target size */
-        width: 100%;
-    }
+.time-slot.no-data {
+    border-left: 5px solid #888;
+    background-color: rgba(136, 136, 136, 0.03);
+}
+.court-info.no-data {
+    color: #888;
+    font-style: italic;
+    display: flex;
+}
+.schedule-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 50px repeat(7, 1fr);
+    gap: 6px;
+    min-width: 800px;
+    overflow-x: auto;
+    background-color: white;
+}
+.header-cell {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #faf9fc;
+    font-size: 14px;
+}
+.court-list-link {
+    color: #002c5a;
+    text-decoration: none;
+    display: block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+.court-list-link:hover {
+    background-color: #0366d6;
+    color: white;
+    text-decoration: none;
+}
+.court-list-link::after {
+    content: "🡆";
+    font-size: 0.8em;
+    margin-left: 4px;
+    display: inline-block;
+}
+.time-header {
+    padding: 15px 10px;
+    text-align: center;
+    background-color: white;
+}
+.date-subheader {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+.time-slot {
+    position: relative;
+    padding: 15px 10px;
+    background-color: white;
+    min-height: 80px;
+    border: 1px solid #000000;
+}
+.time-column {
+    padding: 15px 10px;
+    background-color: white;
+    display: flex;
+    align-items: flex-start;
+    font-size: 12px;
+}
+.court-info {
+    font-size: 12px;
+    line-height: 1.5;
+}
+.unavailable {
+    border-left: 5px solid rgb(255,59,48,0.5);
+}
+.available {
+    border-left: 5px solid rgb(52,199,89,0.5);
+}
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    min-width:300px;
+}
+.nav-button {
+    padding: 8px 16px;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #24292f;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+.nav-button:hover:not(:disabled) {
+    background-color: #f3f4f6;
+}
+.nav-button:active:not(:disabled) {
+    background-color: #ebecf0;
+}
+.nav-button:disabled {
+    background-color: #f6f8fa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.dropdown {
+    padding: 8px 16px;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #24292f;
+    min-width: 60px;
+}
+.dropdown:hover {
+    background-color: #f3f4f6;
+}
+.nav-button:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.nav-button:not(:disabled):hover {
+    background-color: #e9ecef;
+}
+.current-week {
+    font-size: 16px;
+    font-weight: 600;
+    color: #24292f;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+.court-location {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    font-size: 12px;
+}
+.court-number {
+    display: inline-block;
+    padding: 0 2px;
+}
+.court-numbers {
+    display: none;
+    margin-left: 10px;
+    color: #666;
+    font-size: 10px;
+    line-height: 1.4;
+}
+.court-numbers.expanded {
+    display: block;
+}
+.expand-icon {
+    display: inline-block;
+    width: 12px;
+    margin-right: 4px;
+    font-size: 10px;
+}
+#toggleText {
+    font-size:13px;
+    background-color: #E9ECEF;
+    font-weight: bold;
+    padding: 4px 6px;
+    border-radius: 3px;
+    text-align:center;
+    align-items:center;
 }
       
-
 footer {
     margin-top: auto; /* Push footer to the bottom */
     text-align: center; /* Center text horizontally */
@@ -820,11 +381,13 @@ footer {
     border-bottom: black 1px solid;
     height: 54px;
     margin-bottom: 18px;
+    min-width: 300px;
 }
 .filter-label {
     font-size: 14px;
     display: flex;
     align-items: center;
+    text-align:center;
 }
 .filter-heading {
     font-weight: 600;
@@ -832,7 +395,7 @@ footer {
 .filter-button-container {
     display: flex;
     align-items: center;
-    width: 20%
+    width: 20%;
 }
 .filter-button-container .nav-button, .dropdown {
     width: 100%;
@@ -914,32 +477,7 @@ footer {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-@keyframes lds-ring {
-    0% {
-    transform: rotate(0deg);
-    }
-    100% {
-    transform: rotate(360deg);
-    }
-}
 
-@media (max-width: 768px) {
-    .lds-ring {
-    width: 60px;
-    height: 60px;
-    }
-    
-    .lds-ring div {
-    width: 48px;
-    height: 48px;
-    margin: 6px;
-    border-width: 6px;
-    }
-
-    .loading-text {
-    font-size: 0.875rem;
-    }
-}
 
 .hidden {
     display: none !important;
@@ -997,6 +535,494 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+@keyframes lds-ring {
+    0% {
+    transform: rotate(0deg);
+    }
+    100% {
+    transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 1030px) {
+ .filter-button-container .nav-button, .dropdown {
+    padding-left:2px;
+    padding-right:2px;
+    font-size: 13px;
+    width:90%;
+    }
+    .schedule-grid {
+            gap: 1px;
+        }
+}
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        width:100%;
+    }
+    .lds-ring {
+    width: 60px;
+    height: 60px;
+    }
+    
+    .lds-ring div {
+    width: 48px;
+    height: 48px;
+    margin: 6px;
+    border-width: 6px;
+    }
+
+    .loading-text {
+    font-size: 0.875rem;
+    }
+
+    .mobile-timeslot.no-data {
+        border-left: 5px solid #888;
+        background-color: rgba(136, 136, 136, 0.03);
+    }
+
+    .mobile-court-unavailable.no-data {
+        color: #888;
+        font-style: italic;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .schedule-container {
+        padding: 0;
+    }
+    
+    .schedule-grid,
+    .navigation {
+        display: none; /* Hide desktop elements */
+    }
+    
+    .mobile-view {
+        width: 105%;
+        min-width:500px;
+        overflow-x: hidden; /* Prevent horizontal scrolling of the entire view */
+    }
+    
+    .mobile-header {
+        position: fixed;
+        top: 0;
+        background: white;
+        z-index: 100;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        overflow: hidden; /* Contains the scrolling dates */
+    }
+    
+    .mobile-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+    
+    .mobile-current-date {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        flex-grow: 1;
+        padding: 0 10px;
+    }
+    
+    .mobile-dates {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 8px;
+        padding: 10px 0px;
+        /* Add these properties to ensure proper width and scrolling */
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+    }
+    
+    .mobile-dates::-webkit-scrollbar {
+        display: none;
+    }
+    
+    #mobileSchedule {
+        padding-top: 128px;
+    }
+
+    .date-tab {
+        padding: 8px 12px;
+        border: none;
+        background: none;
+        border-radius: 4px;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-width: 60px;
+        flex: 0 0 auto; /* This prevents the tabs from shrinking */
+        cursor: pointer;
+        white-space: nowrap; /* Prevents text wrapping */
+        flex-grow: 1; /* Each item will grow to fill available space */
+    flex-shrink: 1; /* Allows items to shrink if necessary */
+    flex-basis: 0; /* Start with zero base size, grow from there */
+    }
+    
+    .date-tab.active {
+        background-color: #f0f0f0;
+        font-weight: 500;
+    }
+    
+    .date-tab .day {
+        font-weight: 500;
+    }
+    .date-tab .date {
+        font-size: 12px;
+        color: #666;
+    }
+    .date-tab.active {
+        border-bottom: 2px solid #000;
+    }
+    
+    .mobile-timeslot {
+        padding: 12px 16px; /* Increase horizontal padding */
+        margin-bottom: 1px; /* Add slight separation between time slots */
+    }
+    
+    .mobile-time {
+        font-weight: 500;
+        margin-bottom: 12px;
+    }
+    
+    .mobile-court {
+        width: 100%; /* Ensure full width */
+    }
+    
+    .mobile-court-name {
+        flex-grow: 1;
+        font-weight: 500;
+        font-size: 14px; /* Slightly larger font */
+        padding-right: 12px; /* Add some space before the count */
+        white-space: normal; /* Allow text to wrap if needed */
+        line-height: 1.4; /* Better line height for readability */
+    }
+    
+    .mobile-court-count {
+        color: #666;
+        font-size: 13px;
+        white-space: nowrap; /* Keep the count on one line */
+        padding-left: 8px; /* Space from the name */
+    }
+    
+    .mobile-court-numbers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 0;
+        margin-left: 24px; /* Align with the location name */
+        width: calc(100% - 24px); /* Full width minus the left margin */
+    }
+    .mobile-court-chip {
+        background-color: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 13px;
+        color: #0366d6;
+        display: inline-block;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        margin: 2px;
+    }
+    .mobile-court-chip:hover {
+        background-color: #0366d6;
+        color: white;
+        transform: translateY(-1px);
+    }
+    .mobile-court-chip:active {
+        transform: translateY(0);
+    }
+    .court-link::after,
+    .mobile-court-chip::after {
+        font-size: 0.8em;
+        margin-left: 2px;
+        display: inline-block;
+    }
+    .mobile-filter-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .mobile-filter-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .mobile-filter-button.active {
+        background-color: #f0f0f0;
+        border-color: #0366d6;
+    }
+    .mobile-filter-button.active svg {
+    color: #0366d6;
+    }
+    .mobile-filter-button {
+        position: fixed;
+        bottom: 24px; /* Distance from bottom */
+        right: 24px; /* Distance from right */
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 48px; /* Slightly larger for better touch target */
+        height: 48px; /* Slightly larger for better touch target */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Enhanced shadow for floating effect */
+        z-index: 1000;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .mobile-filter-dropdown {
+        position: fixed;
+        bottom: 84px; /* Position above the filter button */
+        left: 16px;
+        right: 16px;
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 999;
+    }
+    .mobile-dropdown {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        background-color: white;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+    .mobile-filter-button.active {
+        background-color: #f0f0f0;
+    }
+
+    .mobile-filter-button.active svg {
+        color: #0366d6;
+    }
+    .mobile-court-header {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        cursor: pointer;
+        width: 100%; /* Ensure full width */
+    }
+
+    .court-arrow {
+        margin-right: 12px; /* Increase space after arrow */
+        font-size: 12px;
+        transition: transform 0.3s ease;
+        flex-shrink: 0; /* Prevent arrow from shrinking */
+    }
+    .mobile-court-info {
+        padding: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #666;
+    }
+
+    .mobile-court-info div {
+        margin-bottom: 8px;
+    }
+
+    .mobile-court-info strong {
+        color: #24292f;
+    }
+
+    .mobile-court-list {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-court-item {
+        padding: 8px 0;
+        color: #666;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .mobile-court-item:last-child {
+        border-bottom: none;
+    }
+    .mobile-timeslot {
+        position: relative;
+        border-left: 5px solid transparent;
+        transition: background-color 0.2s ease;
+    }
+
+    .mobile-timeslot.available {
+        border-left: 5px solid rgb(52,199,89,0.5); /* Green border for available */
+        background-color: rgba(52,199,89,0.03); /* Very light green background */
+    }
+
+    .mobile-timeslot.unavailable {
+        border-left: 5px solid rgb(255,59,48,0.5); /* Red border for unavailable */
+        background-color: rgba(255,59,48,0.03); /* Very light red background */
+    }
+
+    .mobile-time {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .mobile-court-unavailable {
+        padding: 10px 0;
+        color: #666;
+        font-style: italic;
+    }
+
+    .mobile-timeslot.available:active {
+        background-color: rgba(52,199,89,0.1);
+    }
+    .overlay {
+        align-items: flex-start; /* Align to top on mobile */
+        padding: 0; /* Add padding around the overlay */
+        justify-content: flex-start; /* Align to the left */
+    }
+    .overlay-content {
+        margin: 16px;
+        padding: 16px;
+        max-height: calc(80vh - 32px);
+        transform: translateY(10%);
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+    .mobile-toggle-container {
+        display: flex;
+        justify-content: center;
+        padding: 8px 0;
+        background-color: white;
+        border-bottom: 1px solid #eee;
+    }
+    .toggle-switch {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 24px;
+    }
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+
+    #mobileToggleText {
+        font-size:14px;
+        background-color: #E9ECEF;
+        font-weight: bold;
+        padding: 4px 6px;
+        border-radius: 3px;
+        text-align:center;
+        align-items:center;
+    }
+
+/* Adjust the mobile schedule padding to account for the new toggle */
+    #mobileSchedule {
+        padding-top: 160px; /* Increase this value to account for the toggle */
+    }
+			
+
+    .filter-group {
+        max-width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 14px;
+    }
+
+    .filter-input {
+        min-height: 30px; /* Minimum touch target size */
+        font-size: 14px; /* Prevent auto-zoom on iOS */
+    }
+
+    /* Specific styling for number inputs */
+    input[type="number"].filter-input {
+        -moz-appearance: textfield; /* Remove spinner arrows in Firefox */
+    }
+
+    input[type="number"].filter-input::-webkit-outer-spin-button,
+    input[type="number"].filter-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Specific styling for date input */
+    input[type="date"].filter-input {
+        min-height: 44px;
+        padding-right: 10px; /* Add space for the calendar icon */
+    }
+
+    /* Specific styling for select */
+    select.filter-input {
+        padding-right: 30px; /* Space for the dropdown arrow */
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+    }
+
+    .button-group {
+        margin-top: 20px;
+        gap: 8px;
+    }
+
+    .filter-button {
+        min-height: 44px; /* Minimum touch target size */
+        width: 100%;
+    }
+}
 </style>
 </head>
 <body>
@@ -2401,7 +2427,29 @@ function toggleMobileDataVisibility() {
     }
 }
 
-    </script>
+function enableZoom() {
+    let viewport = document.querySelector("meta[name=viewport]");
+    if (viewport) {
+        viewport.setAttribute("content", "width=device-width, initial-scale=1.0");
+    }
+}
+
+function lockViewport() {
+        let viewport = document.querySelector("meta[name=viewport]");
+        if (!viewport) {
+            viewport = document.createElement("meta");
+            viewport.name = "viewport";
+            document.head.appendChild(viewport);
+        }
+        viewport.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+        // Enable zooming after 5 second
+        setTimeout(enableZoom, 5000);
+    }
+
+// Run on page load
+lockViewport();
+
+</script>
 
     <script type="application/ld+json">
     // Structured Data (Schema Markup) to help search engines understand your content better, enhancing rich results for SEO
