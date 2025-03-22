@@ -1203,7 +1203,7 @@ function getBookingUrl(location, date) {
 // Fetch data from API
 async function fetchBookings() {
     try {
-        const response = await fetch('https://storage.googleapis.com/badminton-bookings/all_bookings.json');
+        const response = await fetch('https://storage.googleapis.com/badminton-courts/all_bookings.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -2224,7 +2224,7 @@ function showLoader() {
 
 async function fetchSocialData() {
     try {
-        const response = await fetch('https://storage.googleapis.com/badminton-bookings/Social%20Sessions.csv');
+        const response = await fetch('https://storage.googleapis.com/badminton-courts/Social%20Sessions.csv');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -2251,7 +2251,7 @@ async function toggleDataVisibility() {
         toggleText.textContent = "Show Courts";
         if (socialData.length === 0) {
             try {
-                const response = await fetch('https://storage.googleapis.com/badminton-bookings/Social%20Sessions.csv');
+                const response = await fetch('https://storage.googleapis.com/badminton-courts/Social%20Sessions.csv');
                 const text = await response.text();
                 socialData = parseCSV(text);
             } catch (error) {
